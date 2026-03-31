@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum LeadStatus {
+  new
+  contacted
+  booked
+  completed
+  lost
+}
+
+enum Urgency {
+  urgent
+  week
+  planned
+}
+
+enum SourceChannel {
+  call
+  whatsapp
+  form
+  callback
+}
+
+enum VerificationStatus {
+  pending
+  verified
+  suspended
+}
+
+model City {
+  id                  String               @id @default(uuid())
+  slug                String               @unique
+  name                String
+  state               String
+  isActive            Boolean              @default(false)
+  phoneNumber         String
+  whatsappNumber      String
+  responseTimeMinutes Int
+  jobsCompleted       Int                  @default(0)
+  heroImageUrl        String?
+  metaTitle           String?
+  metaDescription     String?
+  createdAt           DateTime             @default(now())
+  cityServicePages    CityServicePage[]
+  leads               Lead[]
+  plumbers            Plumber[]
+  reviews             Review[]
+  neighbourhoods      Neighbourhood[]
+  coverageZones       ServiceCoverageZone[]
+}
+
+model Service {
+  id                  String            @id @default(uuid())
+  slug                String            @unique
+  name                String
+  shortDescription    String?
+  fullDescription     String?
+  iconName            String?
+  priceMin            Int
+  priceMax            Int
+  durationHours       Float
+  isEmergencyEligible Boolean           @default(false)
+  isActive            Boolean           @default(true)
+  cityServicePages    CityServicePage[]
+  leads               Lead[]
+  reviews             Review[]
+}
+
+model CityServicePage {
+  id            String   @id @default(uuid())
+  cityId        String
+  serviceId     String
+  customH1      String?
+  customBody    String?
+  localPriceMin Int?
+  localPriceMax Int?
+  isPublished   Boolean  @default(false)
+  publishedAt   DateTime?
+  city          City     @relation(fields: [cityId], references: [id])
+  service       Service  @relation(fields: [serviceId], references: [id])
+
+  @@unique([cityId, serviceId])
+}
+
+model Lead {
+  id            String        @id @default(uuid())
+  name          String
+  mobile        String
+  cityId       String
+  area         String?
+  serviceId    String
+  urgency      Urgency
+  photoUrl     String?
+  sourceChannel SourceChannel
+  sourcePage   String?
+  utmSource    String?
+  utmMedium    String?
+  utmCampaign  String?
+  status       LeadStatus    @default(new)
+  assignedTo   String?
+  crmLeadId    String?
+  notes        String?
+  createdAt    DateTime      @default(now())
+  contactedAt  DateTime?
+  bookedAt     DateTime?
+  completedAt  DateTime?
+  city         City          @relation(fields: [cityId], references: [id])
+  service      Service       @relation(fields: [serviceId], references: [id])
+  plumber      Plumber?      @relation(fields: [assignedTo], references: [id])
+
+  @@index([mobile])
+}
+
+model Plumber {
+  id                 String             @id @default(uuid())
+  name               String
+  mobile             String
+  cityId             String
+  specialisations    String
+  verificationStatus VerificationStatus @default(pending)
+  rating             Float?
+  jobsCompleted      Int                @default(0)
+  isAvailable        Boolean            @default(true)
+  joinedAt           DateTime           @default(now())
+  city               City               @relation(fields: [cityId], references: [id])
+  leads              Lead[]
+}
+
+model Review {
+  id             String    @id @default(uuid())
+  cityId         String
+  serviceId      String?
+  reviewerName   String
+  reviewerArea   String?
+  rating         Int
+  reviewText     String?
+  googleReviewId String?
+  isFeatured     Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  city           City      @relation(fields: [cityId], references: [id])
+  service        Service?  @relation(fields: [serviceId], references: [id])
+}
+
+model Neighbourhood {
+  id            String   @id @default(uuid())
+  cityId        String
+  name          String
+  slug          String
+  pincode       String?
+  isServiceable Boolean  @default(false)
+  city          City     @relation(fields: [cityId], references: [id])
+}
+
+model ServiceCoverageZone {
+  id                  String   @id @default(uuid())
+  cityId              String
+  areaName            String
+  pincode             String
+  responseTimeMinutes Int
+  isServiceable       Boolean  @default(false)
+  city                City     @relation(fields: [cityId], references: [id])
+
+  @@unique([cityId, pincode])
+}
