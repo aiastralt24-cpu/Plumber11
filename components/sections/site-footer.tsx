@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getCities, getServices } from "@/lib/domain/catalog";
 
 export function SiteFooter() {
-  const cities = getCities();
+  const cities = getCities().slice(0, 6);
   const services = getServices().slice(0, 6);
 
   return (
@@ -24,6 +24,9 @@ export function SiteFooter() {
               </li>
             ))}
           </ul>
+          <Link className="mt-4 inline-flex text-sm font-semibold text-accent" href="/cities">
+            View all cities
+          </Link>
         </div>
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.24em] text-white/60">Services</p>

@@ -4,7 +4,8 @@ import type { Metadata } from "next";
 import { DesktopContactCard } from "@/components/sections/desktop-contact-card";
 import { StickyCTA } from "@/components/sections/sticky-cta";
 import { JsonLd } from "@/components/ui/json-ld";
-import { getCities, getCity, getCityAreas, getCityReviews, getCityServicePage, getService, getServices } from "@/lib/domain/catalog";
+import { getCities, getCityAreas, getCityReviews, getServices } from "@/lib/domain/catalog";
+import { getManagedCity, getManagedCityServicePage, getManagedService, getManagedServicesForCity } from "@/lib/domain/catalog-managed";
 import { buildCityServiceMetadata } from "@/lib/seo/metadata";
 import { createFaqSchema, createServiceSchema } from "@/lib/seo/schema";
 import { formatCurrency } from "@/lib/utils/format";
@@ -21,8 +22,8 @@ export async function generateMetadata({
   params: Promise<{ city: string; service: string }>;
 }): Promise<Metadata> {
   const { city: citySlug, service: serviceSlug } = await params;
-  const city = getCity(citySlug);
-  const service = getService(serviceSlug);
+  const city = await getManagedCity(citySlug);
+  const service = await getManagedService(serviceSlug);
   return city && service ? buildCityServiceMetadata(city, service) : {};
 }
 
@@ -32,9 +33,10 @@ export default async function CityServicePage({
   params: Promise<{ city: string; service: string }>;
 }) {
   const { city: citySlug, service: serviceSlug } = await params;
-  const city = getCity(citySlug);
-  const service = getService(serviceSlug);
-  const combo = getCityServicePage(citySlug, serviceSlug);
+  const city = await getManagedCity(citySlug);
+  const service = await getManagedService(serviceSlug);
+  const combo = await getManagedCityServicePage(citySlug, serviceSlug);
+  const services = await getManagedServicesForCity(citySlug);
   const areaPages = city ? getCityAreas(city.slug).slice(0, 6) : [];
 
   if (!city || !service || !combo) {
@@ -135,7 +137,7 @@ export default async function CityServicePage({
         <DesktopContactCard
           city={city}
           cities={getCities()}
-          services={getServices()}
+          services={services}
           serviceSlug={service.slug}
           sourcePage={`/${citySlug}/${serviceSlug}`}
         />

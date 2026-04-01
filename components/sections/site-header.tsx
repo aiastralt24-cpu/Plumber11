@@ -12,16 +12,15 @@ const nav = [
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-primary text-white">
-      <div className="safety-stripes h-1 w-full" />
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-primary text-white shadow-[0_10px_30px_rgba(3,10,18,0.22)]">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-3 font-display text-2xl font-semibold tracking-tight">
-          <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-sm font-sans font-bold">
-            PR
+          <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/12 bg-white/6 text-lg text-accent">
+            ◔
           </span>
-          <span>PlumbRight</span>
+          <span className="text-white">PlumbRight</span>
         </Link>
-        <nav className="hidden items-center gap-6 text-sm text-white/80 lg:flex">
+        <nav className="hidden items-center gap-6 text-sm text-white/78 lg:flex">
           {nav.map((item) => (
             <Link key={item.href} href={item.href} className="transition hover:text-white">
               {item.label}
@@ -31,21 +30,17 @@ export function SiteHeader() {
         <div className="flex items-center gap-3">
           <a
             href="tel:09810001001"
-            className="hidden rounded-full border border-white/15 bg-white/5 px-4 py-2 md:block"
+            className="hidden rounded-2xl border border-white/12 bg-white/6 px-5 py-3 md:block"
           >
-            <span className="mr-3 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/55">
-              Hotline
+            <span className="flex items-center gap-2 text-sm font-semibold text-white">
+              <PhoneCall className="h-4 w-4" />
+              24/7 Helpline
             </span>
-            <span className="text-sm font-semibold">09810001001</span>
-          </a>
-          <a href="tel:09810001001" className="hidden xl:block">
-            <Button variant="ghost">
-              <PhoneCall className="mr-2 h-4 w-4" />
-              Call Now
-            </Button>
           </a>
           <Link href="/book">
-            <Button>Book a Plumber</Button>
+            <Button className="px-6" variant="primary">
+              Book Plumber Now
+            </Button>
           </Link>
         </div>
       </div>

@@ -31,7 +31,8 @@ export function LeadForm({
   defaultCitySlug,
   defaultServiceSlug,
   sourcePage,
-  compact = false
+  compact = false,
+  mode = "full"
 }: {
   cities: City[];
   services: Service[];
@@ -39,8 +40,10 @@ export function LeadForm({
   defaultServiceSlug?: string;
   sourcePage: string;
   compact?: boolean;
+  mode?: "full" | "quick";
 }) {
   const [status, setStatus] = useState<string>("");
+  const [step, setStep] = useState<1 | 2>(1);
   const defaults = useMemo<FormValues>(
     () => ({
       name: "",
@@ -62,6 +65,7 @@ export function LeadForm({
   });
 
   const fullForm = !compact;
+  const quickFlow = mode === "quick";
 
   async function onSubmit(values: FormValues) {
     setStatus("Sending...");
@@ -77,7 +81,154 @@ export function LeadForm({
 
     if (response.ok) {
       form.reset(defaults);
+      setStep(1);
     }
+  }
+
+  async function goToDetailsStep() {
+    const valid = await form.trigger(["serviceSlug", "mobile"]);
+
+    if (valid) {
+      setStep(2);
+    }
+  }
+
+  if (quickFlow) {
+    return (
+      <form
+        className="overflow-hidden rounded-[30px] border border-[#d9d1c3] bg-[linear-gradient(180deg,#fffdfa_0%,#f6efe4_100%)] shadow-[0_28px_80px_rgba(15,35,58,0.14)]"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <div className="border-b border-primary/10 bg-white px-6 py-5">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-teal">
+                Fast booking
+              </p>
+              <h3 className="mt-2 text-2xl font-semibold text-primary">
+                Book a plumber in under 30 seconds.
+              </h3>
+              <p className="mt-2 max-w-lg text-sm leading-6 text-muted">
+                Start with the issue and your phone number. We only ask for job details once you
+                are ready to confirm.
+              </p>
+            </div>
+            <div className="hidden rounded-full border border-primary/10 bg-primary/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-primary/70 md:block">
+              Step {step} of 2
+            </div>
+          </div>
+          <div className="mt-4 flex gap-2">
+            {[1, 2].map((item) => (
+              <div
+                key={item}
+                className={
+                  item <= step
+                    ? "h-2 flex-1 rounded-full bg-accent"
+                    : "h-2 flex-1 rounded-full bg-primary/10"
+                }
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-4 p-6">
+          {step === 1 ? (
+            <>
+              <div>
+                <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/72">
+                  What is the issue?
+                </label>
+                <Select {...form.register("serviceSlug")}>
+                  {services.map((service) => (
+                    <option key={service.slug} value={service.slug}>
+                      {service.name}
+                    </option>
+                  ))}
+                </Select>
+                <p className="mt-1 text-xs text-error">
+                  {form.formState.errors.serviceSlug?.message}
+                </p>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/72">
+                  Phone number
+                </label>
+                <Input placeholder="10-digit mobile number" {...form.register("mobile")} />
+                <p className="mt-1 text-xs text-error">{form.formState.errors.mobile?.message}</p>
+              </div>
+
+              <Button fullWidth onClick={goToDetailsStep} type="button">
+                Continue
+              </Button>
+              <p className="text-xs uppercase tracking-[0.2em] text-primary/48">
+                No long form. Just the essentials first.
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="grid gap-4 md:grid-cols-2">
+                <div>
+                  <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/72">
+                    City
+                  </label>
+                  <Select {...form.register("citySlug")}>
+                    {cities.map((city) => (
+                      <option key={city.slug} value={city.slug}>
+                        {city.name}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/72">
+                    Area or pincode
+                  </label>
+                  <div className="relative">
+                    <MapPin className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-primary/40" />
+                    <Input className="pl-11" placeholder="Area or pincode" {...form.register("area")} />
+                  </div>
+                  <p className="mt-1 text-xs text-error">{form.formState.errors.area?.message}</p>
+                </div>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/72">
+                  Your name
+                </label>
+                <Input placeholder="Full name" {...form.register("name")} />
+                <p className="mt-1 text-xs text-error">{form.formState.errors.name?.message}</p>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/72">
+                  When do you need help?
+                </label>
+                <Select {...form.register("urgency")}>
+                  <option value="urgent">Urgent (today)</option>
+                  <option value="week">This week</option>
+                  <option value="planned">Planning ahead</option>
+                </Select>
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Button className="sm:flex-1" disabled={form.formState.isSubmitting} type="submit">
+                  {form.formState.isSubmitting ? "Sending..." : "Confirm booking"}
+                </Button>
+                <Button className="sm:flex-1" onClick={() => setStep(1)} type="button" variant="secondary">
+                  Back
+                </Button>
+              </div>
+              <p className="text-xs uppercase tracking-[0.2em] text-primary/48">
+                We use these details to route the nearest verified plumber.
+              </p>
+              {status ? <p className="text-sm text-primary">{status}</p> : null}
+            </>
+          )}
+        </div>
+      </form>
+    );
   }
 
   return (
@@ -98,7 +249,8 @@ export function LeadForm({
               </p>
               <h3 className="mt-2 text-2xl font-semibold">Book a verified plumber in minutes.</h3>
               <p className="mt-2 max-w-lg text-sm leading-6 text-white/70">
-                Share the city, area, and issue type. The dispatch team uses this to route the nearest available crew faster.
+                Share the city, area, and issue type. The dispatch team uses this to route the
+                nearest available crew faster.
               </p>
             </div>
             <div className="hidden rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-white/70 md:block">
@@ -106,8 +258,8 @@ export function LeadForm({
               Fast triage
             </div>
           </div>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {[
+          <div className="mt-4 flex flex-wrap gap-2">
+            {[
               { icon: PhoneCall, label: "Phone + WhatsApp routing" },
               { icon: ShieldCheck, label: "Verified service network" },
               { icon: Wrench, label: "Leakage to renovation support" }
@@ -131,7 +283,7 @@ export function LeadForm({
       <div className={compact ? "space-y-3" : "grid gap-4 p-6 md:grid-cols-2"}>
         <div className={compact ? "" : "md:col-span-1"}>
           {fullForm ? (
-            <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/58">
+            <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/72">
               Name
             </label>
           ) : null}
@@ -140,7 +292,7 @@ export function LeadForm({
         </div>
         <div>
           {fullForm ? (
-            <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/58">
+            <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/72">
               Mobile number
             </label>
           ) : null}
@@ -149,7 +301,7 @@ export function LeadForm({
         </div>
         <div>
           {fullForm ? (
-            <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/58">
+            <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/72">
               City
             </label>
           ) : null}
@@ -163,7 +315,7 @@ export function LeadForm({
         </div>
         <div>
           {fullForm ? (
-            <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/58">
+            <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/72">
               Area or pincode
             </label>
           ) : null}
@@ -171,10 +323,11 @@ export function LeadForm({
             <MapPin className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-primary/40" />
             <Input className="pl-11" placeholder="Area or pincode" {...form.register("area")} />
           </div>
+          <p className="mt-1 text-xs text-error">{form.formState.errors.area?.message}</p>
         </div>
         <div>
           {fullForm ? (
-            <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/58">
+            <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/72">
               Service needed
             </label>
           ) : null}
@@ -188,7 +341,7 @@ export function LeadForm({
         </div>
         <div>
           {fullForm ? (
-            <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/58">
+            <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/72">
               Urgency
             </label>
           ) : null}

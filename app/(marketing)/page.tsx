@@ -1,217 +1,162 @@
 import Link from "next/link";
 import { ArrowRight, Clock3, PhoneCall, ShieldCheck, Siren, Star } from "lucide-react";
 import { LeadForm } from "@/components/forms/lead-form";
+import { CitySelector } from "@/components/sections/city-selector";
 import { HeroVisual } from "@/components/sections/hero-visual";
 import { ServiceIcon } from "@/components/ui/service-icon";
 import { getCities, getFeaturedReviews, getServices } from "@/lib/domain/catalog";
+import type { Service } from "@/types/domain";
+
+const topServiceLabels: Record<string, string> = {
+  "pipe-leakage-repair": "Water leakage",
+  "drain-cleaning": "Blocked drain",
+  "toilet-repair": "Toilet issue",
+  "tap-installation": "Tap or faucet problem"
+};
 
 export default function HomePage() {
   const cities = getCities();
   const services = getServices();
   const featuredReviews = getFeaturedReviews();
+  const primaryCity = cities[0];
+  const totalJobs = cities.reduce((sum, city) => sum + city.jobsCompleted, 0);
+  const averageRating = featuredReviews.length
+    ? (
+        featuredReviews.reduce((sum, review) => sum + review.rating, 0) / featuredReviews.length
+      ).toFixed(1)
+    : "4.8";
+  const highlightedServices = [
+    services.find((service) => service.slug === "pipe-leakage-repair"),
+    services.find((service) => service.slug === "drain-cleaning"),
+    services.find((service) => service.slug === "toilet-repair")
+  ].filter((service): service is Service => Boolean(service));
+  const otherServices = services.filter(
+    (service) =>
+      !highlightedServices.some((highlightedService) => highlightedService?.slug === service.slug)
+  );
 
   return (
     <main>
       <section className="relative overflow-hidden bg-primary text-white">
         <div className="absolute inset-0 bg-mesh opacity-80" />
-        <div className="absolute inset-y-0 right-[-12%] w-[48%] bg-[radial-gradient(circle_at_center,rgba(232,96,28,0.18),transparent_62%)] blur-3xl" />
-        <div className="absolute left-0 top-24 hidden h-64 w-64 rounded-full bg-accent/15 blur-3xl lg:block" />
-        <div className="relative mx-auto grid min-h-[calc(100svh-89px)] max-w-7xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8 lg:py-12">
-          <div className="flex flex-col justify-center lg:py-8">
-            <div className="inline-flex w-fit items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-white/68">
-              <Siren className="h-4 w-4 text-accent" />
-              Fast-response plumbing network
-            </div>
-            <p className="mt-6 text-sm font-semibold uppercase tracking-[0.28em] text-accent/90">
-              City-first emergency and same-day service
-            </p>
-            <h1 className="mt-4 max-w-4xl font-display text-5xl leading-[0.92] sm:text-6xl lg:text-7xl">
-              The fastest trusted plumbing response network in your city.
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg text-white/78">
-              Leakage, drainage, bathroom fitting, tank repair, urgent night calls, and verified
-              same-day dispatch across launch cities with conversion-first local routing.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/mumbai/plumber-services"
-                className="inline-flex min-h-14 items-center justify-center rounded-2xl bg-accent px-7 py-4 text-center text-sm font-semibold text-white shadow-[0_18px_40px_rgba(232,96,28,0.3)]"
-              >
-                Find a Plumber
-              </Link>
-              <a
-                href="https://wa.me/919810001001"
-                className="inline-flex min-h-14 items-center justify-center rounded-2xl border-2 border-white/20 px-7 py-4 text-center text-sm font-semibold text-white"
-              >
-                WhatsApp Us
-              </a>
-            </div>
-            <div className="mt-10 grid max-w-3xl gap-3 md:grid-cols-3">
-              {[
-                ["Emergency line", "24/7 phone and WhatsApp response"],
-                ["Verified crews", "Background checked and city-routed"],
-                ["Price clarity", "Local pricing bands before work begins"]
-              ].map(([title, copy]) => (
-                <div key={title} className="rounded-[24px] border border-white/10 bg-white/5 p-4">
-                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent/90">{title}</p>
-                  <p className="mt-2 text-sm leading-6 text-white/72">{copy}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="grid gap-5 lg:justify-self-end">
-            <div className="relative overflow-hidden rounded-[40px] border border-white/10 bg-white/6 p-3 shadow-[0_30px_80px_rgba(4,10,18,0.4)] backdrop-blur">
-              <HeroVisual />
-              <div className="absolute left-6 top-6 rounded-full bg-accent px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-white shadow-panel">
-                Emergency-ready dispatch
-              </div>
-            </div>
-            <div className="grid gap-4 xl:grid-cols-[1.08fr_0.92fr]">
-              <div className="text-text">
-                <LeadForm cities={cities} services={services} sourcePage="/" />
-              </div>
-              <div className="overflow-hidden rounded-[34px] border border-white/10 bg-[#0d1d30] shadow-panel">
-                <div className="safety-stripes h-14 w-full border-b border-white/10" />
-                <div className="space-y-5 p-6 text-white">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-accent/90">
-                      Hotline first
-                    </p>
-                    <p className="mt-2 text-3xl font-semibold">09810001001</p>
-                  </div>
-                  <div className="rounded-[24px] border border-white/10 bg-white/5 p-4">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/55">
-                      Response commitment
-                    </p>
-                    <p className="mt-2 flex items-center gap-2 text-2xl font-semibold">
-                      <Clock3 className="h-5 w-5 text-accent" />
-                      Dispatch starts in under 5 minutes
-                    </p>
-                  </div>
-                  <div className="space-y-3 text-sm text-white/72">
-                    <div className="flex items-start gap-3">
-                      <PhoneCall className="mt-0.5 h-4 w-4 text-success" />
-                      City-specific tracked number
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <ShieldCheck className="mt-0.5 h-4 w-4 text-accent" />
-                      Verified plumber dispatch
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <Siren className="mt-0.5 h-4 w-4 text-accent" />
-                      Urgent jobs escalate automatically
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+        <div className="absolute inset-y-0 right-0 w-[58%] bg-[radial-gradient(circle_at_center,rgba(232,96,28,0.16),transparent_60%)] blur-3xl" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,20,35,0.98)_0%,rgba(8,25,44,0.94)_36%,rgba(8,25,44,0.68)_58%,rgba(8,25,44,0.28)_100%)]" />
 
-      <section className="border-y border-primary/8 bg-white/70 px-4 py-8 backdrop-blur sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-4">
-              {[
-                ["30 min", "avg arrival across live city zones"],
-                [`${cities.length} cities`, "supported footprint with local pages"],
-                ["4 channels", "call, WhatsApp, form, callback"],
-                ["<5 mins", "target first response SLA"]
-              ].map(([value, label]) => (
-            <div key={value} className="border-l border-primary/10 pl-4 first:border-l-0 first:pl-0">
-              <p className="font-display text-4xl text-primary">{value}</p>
-              <p className="mt-2 text-sm uppercase tracking-[0.18em] text-muted">{label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-teal">
-              Core services
-            </p>
-            <h2 className="mt-3 max-w-3xl font-display text-4xl text-primary">
-              Service pages should feel like field-ready capability, not a software feature list.
-            </h2>
-          </div>
-          <Link href="/cities" className="hidden text-sm font-semibold text-accent md:inline-flex">
-            View all cities <ArrowRight className="ml-2 h-4 w-4" />
-          </Link>
-        </div>
-        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-          {services.slice(0, 8).map((service) => (
-            <Link
-              key={service.slug}
-              href={`/services/${service.slug}`}
-              className="group overflow-hidden rounded-[28px] border border-primary/10 bg-white transition hover:-translate-y-1 hover:border-accent"
-            >
-              <div className="safety-stripes h-14 w-full border-b border-primary/10" />
-              <div className="p-6">
-                <ServiceIcon name={service.iconName} className="h-10 w-10 text-accent" />
-                <h3 className="mt-5 text-xl font-semibold text-primary">{service.name}</h3>
-                <p className="mt-2 text-sm leading-6 text-muted">{service.shortDescription}</p>
-                <p className="mt-5 text-xs font-semibold uppercase tracking-[0.22em] text-primary/60 group-hover:text-accent">
-                  View service detail
-                </p>
+        <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-8 sm:px-6 lg:px-8 lg:pb-14 lg:pt-10">
+          <div className="grid items-center gap-10 lg:grid-cols-[0.84fr_1.16fr]">
+            <div className="z-10 max-w-xl py-4 lg:py-10">
+              <div className="inline-flex items-center gap-3 rounded-full border border-success/25 bg-success/10 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-success">
+                <span className="h-2.5 w-2.5 rounded-full bg-success" />
+                Available now
+                <span className="text-white/32">•</span>
+                Live in {primaryCity.name}
               </div>
-            </Link>
-          ))}
-        </div>
-      </section>
 
-      <section className="bg-[#f6f0e7] px-4 py-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-teal">Cities we serve</p>
-              <h2 className="mt-3 font-display text-4xl text-primary">
-                Built city-by-city so every page feels local, urgent, and believable.
-              </h2>
-              <p className="mt-4 max-w-xl text-lg text-muted">
-                City-specific content, local numbers, neighbourhood signals, and CMS-driven growth
-                without code changes.
+              <h1 className="mt-8 max-w-3xl font-display text-5xl leading-[0.95] text-white sm:text-6xl lg:text-7xl">
+                Need a plumber in <span className="text-accent">30 minutes?</span>
+                <br />
+                Book instantly.
+              </h1>
+
+              <p className="mt-6 max-w-lg text-xl leading-9 text-white/78">
+                Verified professionals. Fixed pricing. Fast response in your city.
               </p>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {cities.slice(0, 12).map((city) => (
+
+              <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                {[
+                  { icon: Star, label: `${averageRating}★`, copy: `${featuredReviews.length} featured reviews` },
+                  {
+                    icon: ShieldCheck,
+                    label: "Verified",
+                    copy: `${primaryCity.plumbersOnNetwork} active pros in ${primaryCity.name}`
+                  },
+                  { icon: Clock3, label: "30 Min", copy: `Average arrival in ${primaryCity.name}` }
+                ].map((item) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <div
+                      key={item.label}
+                      className="rounded-[22px] border border-white/10 bg-white/6 px-4 py-4 shadow-[0_14px_40px_rgba(0,0,0,0.18)] backdrop-blur"
+                    >
+                      <div className="flex items-center gap-2 text-white">
+                        <Icon className="h-4 w-4 text-accent" />
+                        <span className="text-lg font-semibold">{item.label}</span>
+                      </div>
+                      <p className="mt-1 text-sm text-white/65">{item.copy}</p>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <Link
-                  key={city.slug}
-                  href={`/${city.slug}/plumber-services`}
-                  className="rounded-[26px] border border-primary/10 bg-white p-5 transition hover:border-accent"
+                  href="#hero-booking"
+                  className="inline-flex min-h-16 items-center justify-center rounded-[22px] bg-accent px-8 py-4 text-lg font-semibold text-white shadow-[0_22px_50px_rgba(232,96,28,0.35)]"
                 >
-                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-teal">
-                    {city.state}
-                  </p>
-                  <p className="mt-2 text-2xl font-semibold text-primary">{city.name}</p>
-                  <p className="mt-2 text-sm text-muted">
-                    {city.responseTimeMinutes}-minute average response with verified professionals.
-                  </p>
+                  Book Plumber Now
+                  <ArrowRight className="ml-3 h-5 w-5" />
                 </Link>
-              ))}
+                <Link
+                  href="/services"
+                  className="inline-flex min-h-16 items-center justify-center rounded-[22px] px-4 py-4 text-base font-semibold text-white/70 transition hover:text-white"
+                >
+                  View services
+                </Link>
+              </div>
+
+              <div className="mt-6 flex items-center gap-4 text-sm text-white/76">
+                <div className="flex -space-x-3">
+                  {[0, 1, 2, 3].map((index) => (
+                    <div
+                      key={index}
+                      className="h-10 w-10 rounded-full border-2 border-primary bg-[linear-gradient(135deg,#f2c7a5,#9db4c7)]"
+                    />
+                  ))}
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="h-2.5 w-2.5 rounded-full bg-success" />
+                  <span>{primaryCity.plumbersOnNetwork} plumbers active in {primaryCity.name}</span>
+                </div>
+              </div>
             </div>
-            <div className="mt-6">
-              <Link href="/cities" className="inline-flex text-sm font-semibold text-accent">
-                Browse all {cities.length} supported cities <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
+
+            <div className="relative min-h-[540px] lg:min-h-[700px]">
+              <div className="absolute inset-0 overflow-hidden rounded-[38px] border border-white/10 bg-[#0d2036] shadow-[0_36px_100px_rgba(3,10,18,0.42)]">
+                <HeroVisual />
+              </div>
+              <div id="hero-booking" className="relative mx-auto max-w-md px-2 pt-[310px] sm:px-0 lg:absolute lg:bottom-6 lg:right-6 lg:w-[380px] lg:pt-0">
+                <LeadForm cities={cities} mode="quick" services={services} sourcePage="/" />
+              </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      <section className="bg-primary px-4 py-20 text-white sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="relative z-10 mt-8 grid gap-4 rounded-[30px] border border-primary/10 bg-white p-4 text-primary shadow-[0_24px_80px_rgba(12,24,42,0.16)] md:grid-cols-4 md:p-6">
             {[
-              "Call or submit the issue",
-              "City dispatch confirms service and ETA",
-              "Technician arrives and confirms scope"
-            ].map((step, index) => (
-              <div key={step} className="rounded-[26px] border border-white/10 bg-white/5 p-6">
-                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-white/55">
-                  Step 0{index + 1}
-                </p>
-                <p className="mt-3 text-2xl font-semibold">{step}</p>
+              ["1. Book", "Tell us the issue"],
+              ["2. Confirm", "We call to verify"],
+              ["3. On the Way", "Plumber is dispatched"],
+              ["4. Fixed!", "Problem solved quickly"]
+            ].map(([title, copy], index) => (
+              <div
+                key={title}
+                className="flex items-start gap-4 border-b border-primary/10 pb-4 last:border-b-0 last:pb-0 md:border-b-0 md:border-r md:pb-0 md:last:border-r-0"
+              >
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#fff0e6] text-accent">
+                  {index === 1 ? (
+                    <PhoneCall className="h-5 w-5" />
+                  ) : index === 2 ? (
+                    <Siren className="h-5 w-5" />
+                  ) : index === 3 ? (
+                    <ShieldCheck className="h-5 w-5" />
+                  ) : (
+                    <Clock3 className="h-5 w-5" />
+                  )}
+                </div>
+                <div>
+                  <p className="text-lg font-semibold">{title}</p>
+                  <p className="mt-1 text-sm text-primary/62">{copy}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -221,15 +166,19 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-teal">Customer reviews</p>
-            <h2 className="mt-3 font-display text-4xl text-primary">Proof from real city bookings.</h2>
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-teal">
+              Customer reviews
+            </p>
+            <h2 className="mt-3 font-display text-4xl text-primary">
+              Trust should show up before the user hesitates.
+            </h2>
           </div>
           <Link href="/reviews" className="hidden text-sm font-semibold text-accent md:inline-flex">
             View all reviews <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         </div>
         <div className="mt-10 grid gap-5 lg:grid-cols-3">
-          {featuredReviews.slice(0, 6).map((review) => (
+          {featuredReviews.slice(0, 3).map((review) => (
             <article key={review.id} className="rounded-[28px] border border-primary/10 bg-white p-6 shadow-panel">
               <div className="flex items-center gap-1 text-accent">
                 {Array.from({ length: review.rating }).map((_, index) => (
@@ -242,6 +191,142 @@ export default function HomePage() {
               </p>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="border-y border-primary/8 bg-white/70 px-4 py-8 backdrop-blur sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-3">
+          {[
+            ["30 min", "average arrival across active service zones"],
+            [`${totalJobs}+`, "jobs completed across live launch cities"],
+            [`${cities.length} cities`, "city pages with local routing and coverage"]
+          ].map(([value, label]) => (
+            <div key={value} className="border-l border-primary/10 pl-4 first:border-l-0 first:pl-0">
+              <p className="font-display text-4xl text-primary">{value}</p>
+              <p className="mt-2 text-sm uppercase tracking-[0.18em] text-muted">{label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-teal">
+              Top plumbing issues
+            </p>
+            <h2 className="mt-3 max-w-3xl font-display text-4xl text-primary">
+              People scan for problems, not generic service categories.
+            </h2>
+          </div>
+          <Link href="/services" className="hidden text-sm font-semibold text-accent md:inline-flex">
+            View all services <ArrowRight className="ml-2 h-4 w-4" />
+          </Link>
+        </div>
+
+        <div className="mt-10 grid gap-5 lg:grid-cols-3">
+          {highlightedServices.map((service) => (
+            <Link
+              key={service.slug}
+              href={`/services/${service.slug}`}
+              className="group overflow-hidden rounded-[30px] border border-primary/10 bg-white transition hover:-translate-y-1 hover:border-accent"
+            >
+              <div className="safety-stripes h-14 w-full border-b border-primary/10" />
+              <div className="p-6">
+                <ServiceIcon name={service.iconName} className="h-10 w-10 text-accent" />
+                <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.24em] text-teal">
+                  Most requested
+                </p>
+                <h3 className="mt-2 text-2xl font-semibold text-primary">
+                  {topServiceLabels[service.slug] ?? service.name}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-muted">{service.shortDescription}</p>
+                <p className="mt-5 text-xs font-semibold uppercase tracking-[0.22em] text-primary/60 group-hover:text-accent">
+                  Solve this issue
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <div className="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          {otherServices.slice(0, 4).map((service) => (
+            <Link
+              key={service.slug}
+              href={`/services/${service.slug}`}
+              className="group overflow-hidden rounded-[28px] border border-primary/10 bg-white transition hover:-translate-y-1 hover:border-accent"
+            >
+              <div className="p-6">
+                <ServiceIcon name={service.iconName} className="h-8 w-8 text-accent" />
+                <h3 className="mt-4 text-xl font-semibold text-primary">{service.name}</h3>
+                <p className="mt-2 text-sm leading-6 text-muted">{service.shortDescription}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-primary px-4 py-20 text-white sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-2xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-accent/90">
+              How it works
+            </p>
+            <h2 className="mt-3 font-display text-4xl">From urgent problem to confirmed visit.</h2>
+          </div>
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
+            {[
+              "Choose the issue and enter your phone number",
+              "Confirm your city and the exact area for routing",
+              "Dispatch shares ETA and sends the nearest verified plumber"
+            ].map((step, index) => (
+              <div key={step} className="rounded-[26px] border border-white/10 bg-white/5 p-6">
+                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-white/55">
+                  Step 0{index + 1}
+                </p>
+                <p className="mt-3 text-2xl font-semibold">{step}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#f6f0e7] px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-teal">
+                Cities we serve
+              </p>
+              <h2 className="mt-3 max-w-3xl font-display text-4xl text-primary">
+                Pick your city fast instead of scanning a long list.
+              </h2>
+            </div>
+            <Link href="/cities" className="hidden text-sm font-semibold text-accent md:inline-flex">
+              Browse all {cities.length} cities <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="mt-10 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+            <CitySelector cities={cities} />
+            <div className="grid gap-4 sm:grid-cols-2">
+              {cities.slice(0, 4).map((city) => (
+              <Link
+                key={city.slug}
+                href={`/${city.slug}/plumber-services`}
+                className="rounded-[26px] border border-primary/10 bg-white p-5 transition hover:border-accent"
+              >
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-teal">
+                  {city.state}
+                </p>
+                <p className="mt-2 text-2xl font-semibold text-primary">{city.name}</p>
+                <p className="mt-2 text-sm text-muted">
+                  {city.responseTimeMinutes}-minute average response with verified professionals.
+                </p>
+              </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
     </main>
