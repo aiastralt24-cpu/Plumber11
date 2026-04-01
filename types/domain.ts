@@ -81,6 +81,20 @@ export type CityServicePage = {
   publish: boolean;
 };
 
+export type AreaPage = {
+  id: string;
+  citySlug: string;
+  cityName: string;
+  areaName: string;
+  areaSlug: string;
+  heroHeadline: string;
+  metaTitle: string;
+  metaDescription: string;
+  bodyCopy: string[];
+  highlights: string[];
+  faq: FAQ[];
+};
+
 export type ServiceCoverageZone = {
   id: string;
   citySlug: string;

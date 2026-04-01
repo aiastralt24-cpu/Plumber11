@@ -1,4 +1,4 @@
-import type { City, Review, Service } from "@/types/domain";
+import type { AreaPage, City, Review, Service } from "@/types/domain";
 
 export function createLocalBusinessSchema(city: City) {
   return {
@@ -71,4 +71,21 @@ export function createReviewSchema(city: City, cityReviews: Review[]) {
       name: `PlumbRight ${city.name}`
     }
   }));
+}
+
+export function createAreaLocalBusinessSchema(city: City, area: AreaPage) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Plumber",
+    name: `PlumbRight ${area.areaName}, ${city.name}`,
+    areaServed: [area.areaName, city.name],
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: city.name,
+      addressRegion: city.state,
+      addressCountry: "IN"
+    },
+    telephone: `+91-${city.phoneNumber}`,
+    openingHours: "Mo-Su 00:00-24:00"
+  };
 }

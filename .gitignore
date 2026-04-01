@@ -7,3 +7,6 @@ playwright-report
 test-results
 dist
 *.log
+
+prisma/dev.db
+tsconfig.tsbuildinfo

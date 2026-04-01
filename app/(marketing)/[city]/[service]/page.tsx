@@ -1,16 +1,17 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { DesktopContactCard } from "@/components/sections/desktop-contact-card";
 import { StickyCTA } from "@/components/sections/sticky-cta";
 import { JsonLd } from "@/components/ui/json-ld";
-import { getCities, getCity, getCityReviews, getCityServicePage, getService, getServices } from "@/lib/domain/catalog";
+import { getCities, getCity, getCityAreas, getCityReviews, getCityServicePage, getService, getServices } from "@/lib/domain/catalog";
 import { buildCityServiceMetadata } from "@/lib/seo/metadata";
 import { createFaqSchema, createServiceSchema } from "@/lib/seo/schema";
 import { formatCurrency } from "@/lib/utils/format";
 
 export function generateStaticParams() {
   return getCities().flatMap((city) =>
-    getServices().slice(0, 5).map((service) => ({ city: city.slug, service: service.slug }))
+    getServices().map((service) => ({ city: city.slug, service: service.slug }))
   );
 }
 
@@ -34,6 +35,7 @@ export default async function CityServicePage({
   const city = getCity(citySlug);
   const service = getService(serviceSlug);
   const combo = getCityServicePage(citySlug, serviceSlug);
+  const areaPages = city ? getCityAreas(city.slug).slice(0, 6) : [];
 
   if (!city || !service || !combo) {
     notFound();
@@ -106,6 +108,26 @@ export default async function CityServicePage({
                   <p className="mt-1 text-sm text-muted">{review.reviewerArea}</p>
                   <p className="mt-3 text-sm leading-6 text-muted">{review.reviewText}</p>
                 </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="rounded-[32px] bg-white p-8 shadow-panel">
+            <h2 className="font-display text-3xl text-primary">
+              Popular areas for {service.name.toLowerCase()} in {city.name}
+            </h2>
+            <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {areaPages.map((area) => (
+                <Link
+                  key={area.id}
+                  href={`/${city.slug}/areas/${area.areaSlug}`}
+                  className="rounded-[22px] border border-primary/10 bg-bg p-5 transition hover:border-accent"
+                >
+                  <p className="text-lg font-semibold text-primary">{area.areaName}</p>
+                  <p className="mt-2 text-sm text-muted">
+                    Local area page for nearby bookings, FAQs, and city dispatch support.
+                  </p>
+                </Link>
               ))}
             </div>
           </section>

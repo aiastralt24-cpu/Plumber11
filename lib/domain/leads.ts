@@ -46,6 +46,56 @@ export async function createLeadSubmission(input: LeadSubmission): Promise<LeadR
     throw new Error("Invalid city or service selection.");
   }
 
+  await prisma.city.upsert({
+    where: { slug: city.slug },
+    update: {
+      name: city.name,
+      state: city.state,
+      phoneNumber: city.phoneNumber,
+      whatsappNumber: city.whatsappNumber,
+      responseTimeMinutes: city.responseTimeMinutes,
+      jobsCompleted: city.jobsCompleted,
+      isActive: city.launchReady
+    },
+    create: {
+      id: city.id,
+      slug: city.slug,
+      name: city.name,
+      state: city.state,
+      phoneNumber: city.phoneNumber,
+      whatsappNumber: city.whatsappNumber,
+      responseTimeMinutes: city.responseTimeMinutes,
+      jobsCompleted: city.jobsCompleted,
+      isActive: city.launchReady
+    }
+  });
+
+  await prisma.service.upsert({
+    where: { slug: service.slug },
+    update: {
+      name: service.name,
+      shortDescription: service.shortDescription,
+      iconName: service.iconName,
+      priceMin: service.priceMin,
+      priceMax: service.priceMax,
+      durationHours: service.durationHours,
+      isEmergencyEligible: service.isEmergencyEligible,
+      isActive: true
+    },
+    create: {
+      id: service.id,
+      slug: service.slug,
+      name: service.name,
+      shortDescription: service.shortDescription,
+      iconName: service.iconName,
+      priceMin: service.priceMin,
+      priceMax: service.priceMax,
+      durationHours: service.durationHours,
+      isEmergencyEligible: service.isEmergencyEligible,
+      isActive: true
+    }
+  });
+
   const lead = await prisma.lead.create({
     data: {
       name: input.name,

@@ -14,10 +14,17 @@ html {
 
 body {
   @apply bg-bg text-text antialiased;
+  background-image:
+    radial-gradient(circle at top left, rgba(232, 96, 28, 0.08), transparent 28%),
+    linear-gradient(180deg, #f6f3ed 0%, #f4f4f4 28%, #f4f4f4 100%);
 }
 
 a {
   @apply transition;
+}
+
+::selection {
+  background: rgba(232, 96, 28, 0.22);
 }
 
 details summary {
@@ -26,4 +33,14 @@ details summary {
 
 details summary::-webkit-details-marker {
   display: none;
+}
+
+.safety-stripes {
+  background-image: repeating-linear-gradient(
+    -55deg,
+    rgba(232, 96, 28, 0.16) 0,
+    rgba(232, 96, 28, 0.16) 14px,
+    transparent 14px,
+    transparent 28px
+  );
 }

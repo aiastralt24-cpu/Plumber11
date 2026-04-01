@@ -1,0 +1,45 @@
+<svg width="1400" height="1200" viewBox="0 0 1400 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1400" height="1200" rx="56" fill="#102640"/>
+  <rect x="34" y="34" width="1332" height="1132" rx="40" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+  <circle cx="170" cy="168" r="188" fill="#E8601C" fill-opacity="0.12"/>
+  <circle cx="1190" cy="168" r="220" fill="#1E3A5D" fill-opacity="0.55"/>
+  <circle cx="1240" cy="1040" r="290" fill="#0B1A2E" fill-opacity="0.92"/>
+  <path d="M72 958C218 874 336 894 486 974C634 1052 758 1042 916 952C1068 864 1188 852 1328 918V1168H72V958Z" fill="#0A1C2F"/>
+  <rect x="812" y="130" width="456" height="246" rx="32" fill="#122D48" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+  <rect x="848" y="170" width="158" height="62" rx="18" fill="#0C2137"/>
+  <rect x="1022" y="170" width="210" height="62" rx="18" fill="#E8601C"/>
+  <text x="875" y="209" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="3">MUMBAI</text>
+  <text x="1056" y="210" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="3">DISPATCH LIVE</text>
+  <rect x="848" y="262" width="384" height="70" rx="20" fill="#FCFAF6"/>
+  <text x="886" y="307" fill="#102640" font-family="Arial, sans-serif" font-size="27" font-weight="700">Pipe leakage repair</text>
+  <circle cx="886" cy="201" r="8" fill="#33C46A"/>
+  <text x="848" y="354" fill="#AAB4C1" font-family="Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="2">NEAREST VERIFIED CREW 14 MINUTES AWAY</text>
+  <g transform="translate(205 205)">
+    <ellipse cx="355" cy="782" rx="258" ry="42" fill="#071625" fill-opacity="0.9"/>
+    <path d="M455 168C488 167 515 189 527 221L565 321L533 334L510 266L474 430L555 780H489L437 528L406 625L417 780H362L346 594L302 521L279 780H220L254 434L335 267L314 332L280 321L317 220C329 188 356 166 389 166L455 168Z" fill="#F59D6A"/>
+    <path d="M304 324L270 426L234 414L263 318L304 324Z" fill="#3C4D60"/>
+    <path d="M514 334L548 418L515 432L485 338L514 334Z" fill="#3C4D60"/>
+    <path d="M339 199C343 140 393 95 453 95C517 95 568 148 568 212C568 259 540 300 499 319V374H410V317C367 297 336 252 339 199Z" fill="#E8601C"/>
+    <rect x="409" y="338" width="92" height="66" rx="20" fill="#0B1A2E"/>
+    <circle cx="450" cy="208" r="102" fill="#F6B089"/>
+    <path d="M378 181C389 125 433 92 491 92C548 92 590 126 599 181L607 227L556 210C531 202 505 198 479 198H418C397 198 376 201 355 208L304 226L312 182C322 128 363 92 420 92H480C433 92 392 117 378 181Z" fill="#102640"/>
+    <rect x="368" y="183" width="158" height="34" rx="17" fill="#102640"/>
+    <circle cx="418" cy="214" r="8" fill="#102640"/>
+    <circle cx="482" cy="214" r="8" fill="#102640"/>
+    <path d="M416 252C437 269 462 269 484 252" stroke="#B96C49" stroke-width="6" stroke-linecap="round"/>
+    <path d="M336 336L246 584C239 603 253 622 274 622H328C343 622 356 612 361 598L424 416L336 336Z" fill="#E8601C"/>
+    <path d="M257 594L348 594" stroke="#0B1A2E" stroke-width="12" stroke-linecap="round"/>
+    <path d="M243 625L360 625" stroke="#0B1A2E" stroke-width="10" stroke-linecap="round"/>
+    <path d="M452 406L607 558" stroke="#D8E0E7" stroke-width="18" stroke-linecap="round"/>
+    <circle cx="625" cy="576" r="74" fill="#DCE4EA"/>
+    <circle cx="625" cy="576" r="42" fill="#102640"/>
+    <path d="M594 515L656 637" stroke="#DCE4EA" stroke-width="26" stroke-linecap="round"/>
+    <rect x="256" y="403" width="124" height="52" rx="22" fill="#FCFAF6"/>
+    <text x="287" y="436" fill="#102640" font-family="Arial, sans-serif" font-size="22" font-weight="700">Leak</text>
+    <rect x="551" y="707" width="218" height="114" rx="28" fill="#122D48" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+    <text x="586" y="748" fill="#E8601C" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">RESPONSE</text>
+    <text x="586" y="790" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="36" font-weight="700">5 min</text>
+  </g>
+  <rect x="126" y="126" width="248" height="62" rx="31" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+  <text x="172" y="165" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="4">VERIFIED CREW</text>
+</svg>

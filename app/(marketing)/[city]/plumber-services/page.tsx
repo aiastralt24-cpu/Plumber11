@@ -1,12 +1,13 @@
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { Clock3, PhoneCall, ShieldCheck, Star, Zap } from "lucide-react";
+import { ArrowRight, Clock3, PhoneCall, ShieldCheck, Siren, Star, Zap } from "lucide-react";
 import { DesktopContactCard } from "@/components/sections/desktop-contact-card";
 import { StickyCTA } from "@/components/sections/sticky-cta";
 import { JsonLd } from "@/components/ui/json-ld";
 import { ServiceIcon } from "@/components/ui/service-icon";
-import { getCities, getCity, getCityReviews, getServices } from "@/lib/domain/catalog";
+import { getCities, getCity, getCityAreas, getCityReviews, getServices } from "@/lib/domain/catalog";
 import { buildCityMetadata } from "@/lib/seo/metadata";
 import { createFaqSchema, createLocalBusinessSchema, createReviewSchema } from "@/lib/seo/schema";
 import { formatCurrency } from "@/lib/utils/format";
@@ -39,6 +40,7 @@ export default async function CityLandingPage({
     notFound();
   }
 
+  const areas = getCityAreas(city.slug);
   const cityReviews = getCityReviews(city.slug);
 
   return (
@@ -47,30 +49,35 @@ export default async function CityLandingPage({
       <JsonLd data={createFaqSchema(city.faq)} />
       <JsonLd data={createReviewSchema(city, cityReviews)} />
       <section className="relative overflow-hidden bg-primary text-white">
-        <div className="absolute inset-0 bg-mesh opacity-80" />
-        <div className="relative mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1.2fr_0.8fr] lg:px-8 lg:py-16">
+        <div className="absolute inset-0 bg-mesh opacity-70" />
+        <div className="absolute right-0 top-10 hidden h-72 w-72 rounded-full bg-accent/15 blur-3xl lg:block" />
+        <div className="relative mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1.08fr_0.92fr] lg:px-8 lg:py-16">
           <div className="flex min-h-[420px] flex-col justify-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-white/60">
-              {city.name} city landing page
+            <div className="inline-flex w-fit items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-white/68">
+              <Siren className="h-4 w-4 text-accent" />
+              {city.name} rapid-response zone
+            </div>
+            <p className="mt-6 text-sm font-semibold uppercase tracking-[0.24em] text-accent/90">
+              Local verified plumbing dispatch
             </p>
             <h1 className="mt-3 max-w-3xl font-display text-5xl leading-[0.96] sm:text-6xl">
               {city.heroHeadline}
             </h1>
             <p className="mt-4 max-w-xl text-lg text-white/78">{city.heroSubheadline}</p>
             <div className="mt-6 flex flex-wrap gap-3 text-sm">
-              <div className="rounded-full bg-white/10 px-4 py-2">
+              <div className="rounded-full border border-white/10 bg-white/8 px-4 py-2">
                 <Star className="mr-2 inline h-4 w-4 text-accent" />
                 4.8 rating
               </div>
-              <div className="rounded-full bg-white/10 px-4 py-2">
+              <div className="rounded-full border border-white/10 bg-white/8 px-4 py-2">
                 <ShieldCheck className="mr-2 inline h-4 w-4 text-accent" />
                 Licensed
               </div>
-              <div className="rounded-full bg-white/10 px-4 py-2">
+              <div className="rounded-full border border-white/10 bg-white/8 px-4 py-2">
                 <Clock3 className="mr-2 inline h-4 w-4 text-accent" />
                 {city.responseTimeMinutes}-min avg response
               </div>
-              <div className="rounded-full bg-white/10 px-4 py-2">
+              <div className="rounded-full border border-white/10 bg-white/8 px-4 py-2">
                 <Zap className="mr-2 inline h-4 w-4 text-accent" />
                 Satisfaction guarantee
               </div>
@@ -90,15 +97,34 @@ export default async function CityLandingPage({
                 WhatsApp Us
               </a>
             </div>
+            <div className="mt-8 grid max-w-3xl gap-3 md:grid-cols-3">
+              {[
+                ["Local number", "City-routed calls and tracking"],
+                ["Price signals", "Clear bands before work begins"],
+                ["Neighbourhood coverage", "Service zones visible on-page"]
+              ].map(([title, copy]) => (
+                <div key={title} className="rounded-[24px] border border-white/10 bg-white/5 p-4">
+                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent/90">{title}</p>
+                  <p className="mt-2 text-sm leading-6 text-white/72">{copy}</p>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="relative overflow-hidden rounded-[32px] border border-white/10 p-2 shadow-panel">
+          <div className="relative overflow-hidden rounded-[36px] border border-white/10 bg-white/5 p-3 shadow-panel">
             <Image
               src={city.heroImage}
               alt={`Plumbing service in ${city.name}`}
               width={1200}
               height={1000}
-              className="h-full min-h-[420px] w-full rounded-[28px] object-cover"
+              className="h-full min-h-[420px] w-full rounded-[30px] object-cover"
             />
+            <div className="absolute left-6 top-6 rounded-full bg-accent px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-white shadow-panel">
+              Emergency-ready
+            </div>
+            <div className="absolute bottom-6 left-6 max-w-xs rounded-[24px] bg-primary/92 px-5 py-4 text-white shadow-panel">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-accent/90">Dispatch note</p>
+              <p className="mt-2 text-2xl font-semibold">{city.responseTimeMinutes} minute response target</p>
+            </div>
           </div>
         </div>
       </section>
@@ -110,25 +136,31 @@ export default async function CityLandingPage({
               Services in {city.name}
             </p>
             <div className="mt-6 grid gap-4 md:grid-cols-2">
-              {services.slice(0, 5).map((service) => (
+              {services.slice(0, 8).map((service) => (
                 <a
                   key={service.slug}
                   href={`/${city.slug}/${service.slug}`}
-                  className="rounded-[24px] border border-border p-5 transition hover:border-primary"
+                  className="group overflow-hidden rounded-[24px] border border-primary/10 transition hover:border-accent"
                 >
-                  <ServiceIcon name={service.iconName} className="h-8 w-8 text-accent" />
-                  <h3 className="mt-4 text-xl font-semibold text-primary">{service.name}</h3>
-                  <p className="mt-2 text-sm text-muted">{service.shortDescription}</p>
+                  <div className="safety-stripes h-12 w-full border-b border-primary/10" />
+                  <div className="p-5">
+                    <ServiceIcon name={service.iconName} className="h-8 w-8 text-accent" />
+                    <h3 className="mt-4 text-xl font-semibold text-primary">{service.name}</h3>
+                    <p className="mt-2 text-sm text-muted">{service.shortDescription}</p>
+                    <p className="mt-5 text-xs font-semibold uppercase tracking-[0.22em] text-primary/60 group-hover:text-accent">
+                      Open service page <ArrowRight className="ml-1 inline h-3.5 w-3.5" />
+                    </p>
+                  </div>
                 </a>
               ))}
             </div>
           </section>
 
-          <section className="rounded-[32px] bg-white p-8 shadow-panel">
+          <section className="rounded-[32px] border border-primary/10 bg-[#f6f0e7] p-8 shadow-panel">
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-teal">Pricing in {city.name}</p>
             <div className="mt-6 grid gap-3">
-              {services.slice(0, 5).map((service) => (
-                <div key={service.slug} className="grid rounded-2xl bg-bg p-4 md:grid-cols-3">
+              {services.slice(0, 8).map((service) => (
+                <div key={service.slug} className="grid rounded-2xl border border-primary/10 bg-white p-4 md:grid-cols-3">
                   <p className="font-semibold text-primary">{service.name}</p>
                   <p className="text-muted">
                     {formatCurrency(service.priceMin)} - {formatCurrency(service.priceMax)}
@@ -142,8 +174,9 @@ export default async function CityLandingPage({
             </p>
           </section>
 
-          <section className="rounded-[32px] bg-primary p-8 text-white shadow-panel">
-            <div className="grid gap-4 md:grid-cols-3">
+          <section className="overflow-hidden rounded-[32px] bg-primary text-white shadow-panel">
+            <div className="safety-stripes h-14 w-full border-b border-white/10" />
+            <div className="grid gap-4 p-8 md:grid-cols-3">
               <div>
                 <p className="text-sm uppercase tracking-[0.24em] text-white/60">Jobs completed</p>
                 <p className="mt-2 text-3xl font-semibold">{city.jobsCompleted}+</p>
@@ -165,11 +198,30 @@ export default async function CityLandingPage({
               {city.neighbourhoods.map((area) => (
                 <span
                   key={area}
-                  className="rounded-full border border-border px-4 py-2 text-sm font-semibold text-primary"
+                  className="rounded-full border border-primary/10 bg-[#f6f0e7] px-4 py-2 text-sm font-semibold text-primary"
                 >
                   {area}
                 </span>
               ))}
+            </div>
+            <div className="mt-8">
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/55">
+                Area pages for local intent
+              </p>
+              <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                {areas.map((area) => (
+                  <Link
+                    key={area.id}
+                    href={`/${city.slug}/areas/${area.areaSlug}`}
+                    className="rounded-[22px] border border-primary/10 bg-[#f6f0e7] p-4 transition hover:border-accent"
+                  >
+                    <p className="text-lg font-semibold text-primary">{area.areaName}</p>
+                    <p className="mt-2 text-sm text-muted">
+                      Local plumber page with service links, FAQs, and area-specific conversion copy.
+                    </p>
+                  </Link>
+                ))}
+              </div>
             </div>
           </section>
 
@@ -177,7 +229,7 @@ export default async function CityLandingPage({
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-teal">Customer reviews</p>
             <div className="mt-6 grid gap-4 md:grid-cols-2">
               {cityReviews.map((review) => (
-                <article key={review.id} className="rounded-[24px] bg-bg p-5">
+                <article key={review.id} className="rounded-[24px] border border-primary/10 bg-[#f6f0e7] p-5">
                   <p className="text-lg font-semibold text-primary">{review.reviewerName}</p>
                   <p className="mt-1 text-sm text-muted">{review.reviewerArea}</p>
                   <p className="mt-4 text-sm leading-6 text-muted">{review.reviewText}</p>

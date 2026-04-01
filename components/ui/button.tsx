@@ -17,8 +17,8 @@ export function Button({
   return (
     <button
       className={cn(
-        "inline-flex min-h-12 items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold transition hover:-translate-y-0.5",
-        variant === "primary" && "bg-accent text-white shadow-panel",
+        "inline-flex min-h-14 items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold transition duration-200 hover:-translate-y-0.5",
+        variant === "primary" && "bg-accent text-white shadow-[0_18px_40px_rgba(232,96,28,0.28)]",
         variant === "secondary" && "border-2 border-accent bg-white text-accent",
         variant === "ghost" && "bg-white/10 text-white backdrop-blur",
         variant === "success" && "bg-success text-white",

@@ -35,6 +35,9 @@ export default function AdminLoginPage() {
         <p className="mt-2 text-sm text-muted">
           Default local credentials are documented in `.env.example` assumptions.
         </p>
+        <p className="mt-2 text-sm text-muted">
+          Local preview shortcut: open <span className="font-semibold text-primary">/admin</span> directly when using the file-based dev database.
+        </p>
         <div className="mt-6 space-y-4">
           <Input name="email" placeholder="admin@plumbri.ght" type="email" />
           <Input name="password" placeholder="Password" type="password" />

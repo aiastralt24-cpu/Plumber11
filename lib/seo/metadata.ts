@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { City, Service } from "@/types/domain";
+import type { AreaPage, City, Service } from "@/types/domain";
 
 const siteUrl = "https://plumbri.ght";
 
@@ -36,6 +36,16 @@ export function buildCityServiceMetadata(city: City, service: Service): Metadata
     description: `${service.shortDescription} Book verified ${service.name.toLowerCase()} support in ${city.name} with fast response and transparent pricing.`,
     alternates: {
       canonical: `/${city.slug}/${service.slug}`
+    }
+  };
+}
+
+export function buildAreaMetadata(area: AreaPage): Metadata {
+  return {
+    title: area.metaTitle,
+    description: area.metaDescription,
+    alternates: {
+      canonical: `/${area.citySlug}/areas/${area.areaSlug}`
     }
   };
 }

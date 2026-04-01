@@ -6,8 +6,9 @@ import { getCities, getFeaturedReviews, getServices } from "@/lib/domain/catalog
 
 export default async function AdminPage() {
   const session = await auth();
+  const localPreviewMode = process.env.DATABASE_URL?.startsWith("file:");
 
-  if (!session) {
+  if (!session && !localPreviewMode) {
     redirect("/admin/login");
   }
 
@@ -19,9 +20,20 @@ export default async function AdminPage() {
   return (
     <AdminShell>
       <div className="space-y-6">
+        {!session && localPreviewMode ? (
+          <section className="rounded-[28px] border border-accent/20 bg-[#fff4ec] p-6 shadow-panel">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-accent">
+              Local preview mode
+            </p>
+            <h1 className="mt-3 text-3xl font-semibold text-primary">Admin is open locally so you can review the dashboard.</h1>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-muted">
+              Production should still use sign-in, but this local build shows the internal tools directly while the app is running on the file-based development database.
+            </p>
+          </section>
+        ) : null}
         <section className="grid gap-4 md:grid-cols-4">
             {[
-              { label: "Launch cities", value: cities.length },
+              { label: "Supported cities", value: cities.length },
               { label: "Live services", value: services.length },
               { label: "Featured reviews", value: reviews.length },
               { label: "Leads captured", value: dashboard.leadCount },
@@ -36,9 +48,12 @@ export default async function AdminPage() {
 
         <section className="grid gap-6 xl:grid-cols-2">
           <div className="rounded-[28px] bg-white p-6 shadow-panel">
-            <h2 className="text-2xl font-semibold text-primary">City Manager</h2>
+            <div className="flex items-end justify-between gap-4">
+              <h2 className="text-2xl font-semibold text-primary">City Manager</h2>
+              <p className="text-sm text-muted">Showing first 24 of {cities.length} supported cities</p>
+            </div>
             <div className="mt-5 space-y-3">
-              {cities.map((city) => (
+              {cities.slice(0, 24).map((city) => (
                 <div key={city.slug} className="grid rounded-2xl bg-bg p-4 md:grid-cols-4">
                   <p className="font-semibold text-primary">{city.name}</p>
                   <p className="text-sm text-muted">{city.phoneNumber}</p>

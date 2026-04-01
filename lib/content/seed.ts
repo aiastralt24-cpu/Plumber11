@@ -35,217 +35,284 @@ const cityFaq = (city: string): FAQ[] => [
   }
 ];
 
-export const launchCities: City[] = [
-  {
-    id: "city-mumbai",
-    slug: "mumbai",
-    name: "Mumbai",
+const supportedCityNames = [
+  "Mumbai",
+  "Delhi",
+  "Bangalore",
+  "Hyderabad",
+  "Ahmedabad",
+  "Chennai",
+  "Kolkata",
+  "Surat",
+  "Pune",
+  "Jaipur",
+  "Lucknow",
+  "Kanpur",
+  "Nagpur",
+  "Indore",
+  "Thane",
+  "Bhopal",
+  "Visakhapatnam",
+  "Pimpri & Chinchwad",
+  "Patna",
+  "Vadodara",
+  "Ghaziabad",
+  "Ludhiana",
+  "Agra",
+  "Nashik",
+  "Faridabad",
+  "Meerut",
+  "Rajkot",
+  "Kalyan & Dombivali",
+  "Vasai Virar",
+  "Varanasi",
+  "Srinagar",
+  "Aurangabad",
+  "Dhanbad",
+  "Amritsar",
+  "Navi Mumbai",
+  "Allahabad",
+  "Ranchi",
+  "Haora",
+  "Coimbatore",
+  "Jabalpur",
+  "Gwalior",
+  "Vijayawada",
+  "Jodhpur",
+  "Madurai",
+  "Raipur",
+  "Kota",
+  "Guwahati",
+  "Chandigarh",
+  "Solapur",
+  "Hubli and Dharwad",
+  "Bareilly",
+  "Moradabad",
+  "Gurgaon",
+  "Aligarh",
+  "Jalandhar",
+  "Tiruchirappalli",
+  "Bhubaneswar",
+  "Salem",
+  "Mira and Bhayander",
+  "Thiruvananthapuram",
+  "Bhiwandi",
+  "Saharanpur",
+  "Gorakhpur",
+  "Guntur",
+  "Bikaner",
+  "Amravati",
+  "Noida",
+  "Jamshedpur",
+  "Bhilai Nagar",
+  "Warangal",
+  "Cuttack",
+  "Firozabad",
+  "Kochi",
+  "Bhavnagar",
+  "Dehradun",
+  "Durgapur",
+  "Asansol",
+  "Nanded Waghala",
+  "Kolapur",
+  "Ajmer",
+  "Gulbarga",
+  "Jamnagar",
+  "Ujjain",
+  "Loni",
+  "Siliguri",
+  "Jhansi",
+  "Ulhasnagar",
+  "Nellore",
+  "Jammu",
+  "Sangli Miraj Kupwad",
+  "Belgaum",
+  "Mangalore",
+  "Ambattur",
+  "Tirunelveli",
+  "Malegoan",
+  "Gaya",
+  "Jalgaon",
+  "Udaipur"
+];
+
+const cityImagePool = [
+  "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1521207418485-99c705420785?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=1200&q=80"
+];
+
+const cityOverrides: Record<string, Partial<City>> = {
+  mumbai: {
     state: "Maharashtra",
-    phoneNumber: "09810001001",
-    whatsappNumber: "919810001001",
     responseTimeMinutes: 30,
     jobsCompleted: 1420,
     plumbersOnNetwork: 42,
-    heroImage:
-      "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1200&q=80",
-    metaTitle: "Expert Plumbers in Mumbai | 24/7 Fast Response | PlumbRight",
-    metaDescription:
-      "Book verified plumbers in Mumbai for leakage, drainage, bathroom fitting, emergency repairs, and same-day visits.",
     neighbourhoods: ["Andheri", "Borivali", "Thane", "Navi Mumbai", "Powai", "Dadar"],
-    heroHeadline: "Expert Plumbers in Mumbai — Available 24/7",
-    heroSubheadline: "Trusted by 1,400+ households. Same-day service. Verified professionals.",
-    bodyCopy: [
-      "Mumbai plumbing demand is hyper-local and urgent, so the page architecture prioritises immediate action, transparent pricing, and trust signals before anything else.",
-      "PlumbRight Mumbai is structured to convert mobile traffic into calls, WhatsApp inquiries, and fast lead submissions with clean routing across the city’s busiest residential zones.",
-      "Every section on the city page is tuned to answer the three decisions users make in seconds: can someone come fast, can I trust them, and do I have a rough cost range before I commit."
-    ],
-    faq: cityFaq("Mumbai"),
-    featuredReviewIds: ["review-1", "review-2"],
-    launchReady: true
+    featuredReviewIds: ["review-1", "review-2"]
   },
-  {
-    id: "city-bangalore",
-    slug: "bangalore",
-    name: "Bangalore",
-    state: "Karnataka",
-    phoneNumber: "09810001002",
-    whatsappNumber: "919810001002",
-    responseTimeMinutes: 28,
-    jobsCompleted: 1180,
-    plumbersOnNetwork: 35,
-    heroImage:
-      "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80",
-    metaTitle: "Expert Plumbers in Bangalore | Emergency & Same-Day Service | PlumbRight",
-    metaDescription:
-      "Fast, verified plumbers in Bangalore for leaks, drain cleaning, bathroom repair, and emergency plumbing.",
-    neighbourhoods: ["Indiranagar", "Whitefield", "Koramangala", "HSR Layout", "JP Nagar"],
-    heroHeadline: "Expert Plumbers in Bangalore — Available 24/7",
-    heroSubheadline: "Trusted by 1,100+ households. Transparent pricing. Fast local dispatch.",
-    bodyCopy: [
-      "Bangalore combines planned repair demand with high-intent emergency searches, so the city build balances rich SEO coverage with immediate conversion behavior.",
-      "The page system highlights neighbourhood coverage, city-specific review proof, and visible call-first actions for renters, homeowners, and facilities managers alike."
-    ],
-    faq: cityFaq("Bangalore"),
-    featuredReviewIds: ["review-3"],
-    launchReady: true
-  },
-  {
-    id: "city-delhi",
-    slug: "delhi",
-    name: "Delhi",
+  delhi: {
     state: "Delhi NCR",
-    phoneNumber: "09810001003",
-    whatsappNumber: "919810001003",
     responseTimeMinutes: 32,
     jobsCompleted: 1325,
     plumbersOnNetwork: 39,
-    heroImage:
-      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80",
-    metaTitle: "Expert Plumbers in Delhi | 24/7 Citywide Support | PlumbRight",
-    metaDescription:
-      "Trusted Delhi plumbers for urgent leaks, fittings, drain cleaning, and transparent same-day support.",
     neighbourhoods: ["Dwarka", "Rohini", "Lajpat Nagar", "Saket", "Karol Bagh"],
-    heroHeadline: "Expert Plumbers in Delhi — Available 24/7",
-    heroSubheadline: "Trusted by 1,300+ households. Citywide support. Verified professionals.",
-    bodyCopy: [
-      "Delhi pages are built for broad intent coverage with city-specific copy, pricing context, and lead capture that escalates urgent jobs immediately.",
-      "The supporting content gives both emergency and research-oriented users enough confidence to convert without burying the fastest path to contact."
-    ],
-    faq: cityFaq("Delhi"),
-    featuredReviewIds: ["review-4"],
-    launchReady: true
+    featuredReviewIds: ["review-4"]
   },
-  {
-    id: "city-hyderabad",
-    slug: "hyderabad",
-    name: "Hyderabad",
+  bangalore: {
+    state: "Karnataka",
+    responseTimeMinutes: 28,
+    jobsCompleted: 1180,
+    plumbersOnNetwork: 35,
+    neighbourhoods: ["Indiranagar", "Whitefield", "Koramangala", "HSR Layout", "JP Nagar"],
+    featuredReviewIds: ["review-3"]
+  },
+  hyderabad: {
     state: "Telangana",
-    phoneNumber: "09810001004",
-    whatsappNumber: "919810001004",
     responseTimeMinutes: 29,
     jobsCompleted: 910,
     plumbersOnNetwork: 27,
-    heroImage:
-      "https://images.unsplash.com/photo-1521207418485-99c705420785?auto=format&fit=crop&w=1200&q=80",
-    metaTitle: "Expert Plumbers in Hyderabad | Same-Day Repairs | PlumbRight",
-    metaDescription:
-      "Book plumbers in Hyderabad for leak repair, tank cleaning, bathroom work, and fast emergency support.",
     neighbourhoods: ["Gachibowli", "Madhapur", "Kukatpally", "Banjara Hills", "Miyapur"],
-    heroHeadline: "Expert Plumbers in Hyderabad — Available 24/7",
-    heroSubheadline: "Trusted by 900+ households. Same-day service. No hidden charges.",
-    bodyCopy: [
-      "Hyderabad is modelled as a high-growth launch market with room for neighbourhood expansion, so the architecture preserves clear Phase 2 entry points.",
-      "The launch page emphasizes speed, professionalism, and local service reliability across residential and mixed-use zones."
-    ],
-    faq: cityFaq("Hyderabad"),
-    featuredReviewIds: ["review-5"],
-    launchReady: true
+    featuredReviewIds: ["review-5"]
   },
-  {
-    id: "city-pune",
-    slug: "pune",
-    name: "Pune",
-    state: "Maharashtra",
-    phoneNumber: "09810001005",
-    whatsappNumber: "919810001005",
-    responseTimeMinutes: 31,
-    jobsCompleted: 820,
-    plumbersOnNetwork: 23,
-    heroImage:
-      "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80",
-    metaTitle: "Expert Plumbers in Pune | Bathroom & Repair Specialists | PlumbRight",
-    metaDescription:
-      "Verified plumbers in Pune for bathroom fitting, tap repair, drain cleaning, emergency plumbing, and more.",
-    neighbourhoods: ["Baner", "Kothrud", "Wakad", "Viman Nagar", "Hadapsar"],
-    heroHeadline: "Expert Plumbers in Pune — Available 24/7",
-    heroSubheadline: "Trusted by 800+ households. Fast dispatch. Transparent pricing.",
-    bodyCopy: [
-      "Pune’s launch content balances homeowners researching costs with users who need immediate repair support, so page copy stays concise but commercially useful.",
-      "Cross-linking between service pages and city-service pages is part of the core SEO strategy from the first release."
-    ],
-    faq: cityFaq("Pune"),
-    featuredReviewIds: ["review-6"],
-    launchReady: true
-  },
-  {
-    id: "city-ahmedabad",
-    slug: "ahmedabad",
-    name: "Ahmedabad",
+  ahmedabad: {
     state: "Gujarat",
-    phoneNumber: "09810001006",
-    whatsappNumber: "919810001006",
     responseTimeMinutes: 33,
     jobsCompleted: 760,
     plumbersOnNetwork: 21,
-    heroImage:
-      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
-    metaTitle: "Expert Plumbers in Ahmedabad | Fast Local Response | PlumbRight",
-    metaDescription:
-      "Ahmedabad plumbers for tap repair, leakage fixes, pipe fitting, drainage issues, and urgent calls.",
     neighbourhoods: ["Vastrapur", "Navrangpura", "Bopal", "Maninagar", "Satellite"],
-    heroHeadline: "Expert Plumbers in Ahmedabad — Available 24/7",
-    heroSubheadline: "Trusted by 700+ households. Verified professionals. Same-day service.",
-    bodyCopy: [
-      "Ahmedabad pages lean into local search intent and clean mobile conversion paths, keeping the city structure scalable for future tier-two expansion playbooks.",
-      "Launch content focuses on trust, speed, and problem-specific routing across high-demand residential clusters."
-    ],
-    faq: cityFaq("Ahmedabad"),
-    featuredReviewIds: ["review-7"],
-    launchReady: true
+    featuredReviewIds: ["review-7"]
   },
-  {
-    id: "city-surat",
-    slug: "surat",
-    name: "Surat",
+  surat: {
     state: "Gujarat",
-    phoneNumber: "09810001007",
-    whatsappNumber: "919810001007",
     responseTimeMinutes: 34,
     jobsCompleted: 640,
     plumbersOnNetwork: 19,
-    heroImage:
-      "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80",
-    metaTitle: "Expert Plumbers in Surat | Verified Service Teams | PlumbRight",
-    metaDescription:
-      "Book trusted plumbers in Surat for toilet repair, leakage issues, drainage work, and emergency support.",
     neighbourhoods: ["Adajan", "Vesu", "Katargam", "Althan", "Piplod"],
-    heroHeadline: "Expert Plumbers in Surat — Available 24/7",
-    heroSubheadline: "Trusted by 600+ households. Verified teams. Fast response.",
-    bodyCopy: [
-      "Surat is positioned as an underserved but high-intent search market, so launch coverage prioritises keyword depth and operational readiness over decorative UI.",
-      "Conversion surfaces remain call-first with backup WhatsApp and short-form submission paths."
-    ],
-    faq: cityFaq("Surat"),
-    featuredReviewIds: ["review-8"],
-    launchReady: true
+    featuredReviewIds: ["review-8"]
   },
-  {
-    id: "city-jaipur",
-    slug: "jaipur",
-    name: "Jaipur",
+  pune: {
+    state: "Maharashtra",
+    responseTimeMinutes: 31,
+    jobsCompleted: 820,
+    plumbersOnNetwork: 23,
+    neighbourhoods: ["Baner", "Kothrud", "Wakad", "Viman Nagar", "Hadapsar"],
+    featuredReviewIds: ["review-6"]
+  },
+  jaipur: {
     state: "Rajasthan",
-    phoneNumber: "09810001008",
-    whatsappNumber: "919810001008",
     responseTimeMinutes: 35,
     jobsCompleted: 520,
     plumbersOnNetwork: 17,
-    heroImage:
-      "https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=1200&q=80",
-    metaTitle: "Expert Plumbers in Jaipur | 24/7 Support | PlumbRight",
-    metaDescription:
-      "Jaipur plumbing services for bathroom repairs, pipe fitting, drain cleaning, and urgent help across launch zones.",
     neighbourhoods: ["Malviya Nagar", "Vaishali Nagar", "Mansarovar", "Jagatpura", "C-Scheme"],
-    heroHeadline: "Expert Plumbers in Jaipur — Available 24/7",
-    heroSubheadline: "Trusted by 500+ households. City-first support. Transparent quotes.",
-    bodyCopy: [
-      "Jaipur launches as a growth city with strong local search coverage and room for later Hindi content expansion without changing route architecture.",
-      "The city template keeps the mobile viewport efficient, action-heavy, and tuned for high-intent service discovery."
+    featuredReviewIds: ["review-9"]
+  },
+  chennai: { state: "Tamil Nadu" },
+  kolkata: { state: "West Bengal" },
+  lucknow: { state: "Uttar Pradesh" },
+  kanpur: { state: "Uttar Pradesh" },
+  nagpur: { state: "Maharashtra" },
+  indore: { state: "Madhya Pradesh" },
+  thane: { state: "Maharashtra" },
+  bhopal: { state: "Madhya Pradesh" },
+  visakhapatnam: { state: "Andhra Pradesh" },
+  patna: { state: "Bihar" },
+  vadodara: { state: "Gujarat" }
+};
+
+function slugifyCity(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function phoneNumberFor(index: number) {
+  return String(9810000001 + index).padStart(11, "0");
+}
+
+function buildCityBodyCopy(name: string, slug: string, index: number) {
+  const variants = [
+    [
+      `${name} is mapped as a high-intent local plumbing market where users usually need quick reassurance on response time, price range, and whether a verified technician can reach their exact locality without delay.`,
+      `PlumbRight ${name} is structured to convert those visits into calls, WhatsApp chats, and form enquiries by combining local service intent, visible trust markers, and deeper page coverage than a generic city listing.`
     ],
-    faq: cityFaq("Jaipur"),
-    featuredReviewIds: ["review-9"],
-    launchReady: true
-  }
-];
+    [
+      `In ${name}, plumbing demand often clusters around apartment maintenance, kitchen and bathroom leakage, drainage blockages, and urgent overflow situations that require a dispatch-led local page rather than a broad marketplace directory.`,
+      `The ${name} content stack is intentionally built with city pages, service pages, and neighbourhood-style expansion paths so users can land on specific problems, evaluate credibility quickly, and move toward booking without friction.`
+    ],
+    [
+      `${name} works best as a city-first SEO market because plumbing search intent is usually immediate, location-sensitive, and trust-sensitive at the same time.`,
+      `That is why the PlumbRight ${name} page combines local response signals, structured service detail, and area coverage cues in a way that feels useful to real users while still creating room for scalable search coverage.`
+    ]
+  ];
+
+  return variants[(slug.length + index) % variants.length];
+}
+
+function buildComboBody(city: City, service: Service, index: number) {
+  const variants = [
+    [
+      `${service.name} in ${city.name} is written as a dedicated high-intent landing page for users who already know the problem category and need a local team that can respond quickly without sending them through irrelevant service menus.`,
+      `The page combines practical scope explanation, city-specific pricing bands, and direct conversion paths so ${city.name} visitors can move from search to booking with less hesitation.`,
+      `${service.name} demand across ${city.name} often overlaps with surrounding issues like older fitting wear, concealed leakage, drainage complications, or urgent bathroom disruption, so this page also links users into related service journeys when the issue evolves after inspection.`
+    ],
+    [
+      `Users searching for ${service.name.toLowerCase()} in ${city.name} usually want proof that the provider actually serves the city, understands the job type, and can give a sensible price direction before work begins.`,
+      `This city-service page is built around that behaviour, giving ${city.name} households a cleaner path into local plumber dispatch, follow-up through WhatsApp, and quick escalation for urgent cases.`,
+      `By tying ${service.name.toLowerCase()} directly to ${city.name}, the content stays more useful and more SEO-friendly than a generic national page reused without local context.`
+    ],
+    [
+      `${city.name} searchers looking for ${service.name.toLowerCase()} often compare speed, trust, and pricing transparency before they compare anything else.`,
+      `PlumbRight uses this ${city.name} page to make those decisions easier with area-aware routing, service-specific context, and a layout focused on real plumbing intent instead of thin keyword stuffing.`,
+      `That structure helps the page cover search depth, improve internal linking, and support better lead quality for ${service.name.toLowerCase()} requests inside ${city.name}.`
+    ]
+  ];
+
+  return variants[index % variants.length];
+}
+
+export const launchCities: City[] = supportedCityNames.map((name, index) => {
+  const slug = slugifyCity(name);
+  const override = cityOverrides[slug] ?? {};
+  const phoneNumber = override.phoneNumber ?? phoneNumberFor(index);
+  const heroHeadline = override.heroHeadline ?? `Expert Plumbers in ${name} — Available 24/7`;
+  const heroSubheadline =
+    override.heroSubheadline ??
+    `Trusted across ${name}. Same-day service. Verified professionals with clear local response windows.`;
+
+  return {
+    id: override.id ?? `city-${slug}`,
+    slug,
+    name,
+    state: override.state ?? "India",
+    phoneNumber,
+    whatsappNumber: override.whatsappNumber ?? `91${phoneNumber.slice(1)}`,
+    responseTimeMinutes: override.responseTimeMinutes ?? (28 + (index % 8)),
+    jobsCompleted: override.jobsCompleted ?? Math.max(180, 1450 - index * 11),
+    plumbersOnNetwork: override.plumbersOnNetwork ?? Math.max(10, 42 - Math.floor(index / 4)),
+    heroImage: override.heroImage ?? cityImagePool[index % cityImagePool.length],
+    metaTitle: override.metaTitle ?? `Expert Plumbers in ${name} | 24/7 Fast Response | PlumbRight`,
+    metaDescription:
+      override.metaDescription ??
+      `Book trusted plumbers in ${name} for leakage, drainage, pipe fitting, bathroom repair, and urgent same-day support.`,
+    neighbourhoods:
+      override.neighbourhoods ?? ["Central District", "East Zone", "West Zone", "North Sector", "South Sector"],
+    heroHeadline,
+    heroSubheadline,
+    bodyCopy:
+      override.bodyCopy ?? buildCityBodyCopy(name, slug, index),
+    faq: override.faq ?? cityFaq(name),
+    featuredReviewIds: override.featuredReviewIds ?? [],
+    launchReady: override.launchReady ?? true
+  };
+});
 
 export const services: Service[] = [
   {
@@ -398,15 +465,12 @@ export const services: Service[] = [
 ];
 
 export const comboPages: CityServicePage[] = launchCities.flatMap((city) =>
-  services.slice(0, 5).map((service) => ({
+  services.map((service, index) => ({
     id: `${city.slug}-${service.slug}`,
     citySlug: city.slug,
     serviceSlug: service.slug,
     customH1: `${service.name} in ${city.name} | Fast Local Response`,
-    customBody: [
-      `${service.name} in ${city.name} is configured as a long-tail SEO landing page with pricing visibility, city-specific proof, and low-friction conversion paths.`,
-      `The page template connects problem explanation, local context, related services, and immediate lead capture without sacrificing load speed.`
-    ],
+    customBody: buildComboBody(city, service, index),
     localPriceMin: service.priceMin,
     localPriceMax: service.priceMax + 200,
     publish: true

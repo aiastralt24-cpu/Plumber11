@@ -15,12 +15,18 @@ export function DesktopContactCard({
   sourcePage: string;
 }) {
   return (
-    <aside className="hidden rounded-[28px] bg-white p-6 shadow-panel lg:block">
-      <p className="text-sm font-semibold uppercase tracking-[0.24em] text-teal">Need help fast?</p>
-      <h3 className="mt-3 text-2xl font-semibold text-primary">Speak to the {city.name} team in minutes.</h3>
-      <p className="mt-2 text-sm text-muted">
+    <aside className="hidden overflow-hidden rounded-[30px] border border-primary/10 bg-primary text-white shadow-panel lg:block">
+      <div className="safety-stripes h-14 w-full border-b border-white/10" />
+      <div className="p-6">
+      <p className="text-sm font-semibold uppercase tracking-[0.24em] text-white/55">Dispatch desk</p>
+      <h3 className="mt-3 text-3xl font-semibold">Speak to the {city.name} team in minutes.</h3>
+      <p className="mt-2 text-sm text-white/70">
         Use the short form or jump straight to call and WhatsApp. Urgent leads route first.
       </p>
+      <div className="mt-5 rounded-2xl border border-white/10 bg-white/5 p-4">
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/50">Response commitment</p>
+        <p className="mt-2 text-2xl font-semibold">{city.responseTimeMinutes} min average response</p>
+      </div>
       <div className="mt-5 grid gap-3">
         <a
           href={`tel:${city.phoneNumber}`}
@@ -35,7 +41,7 @@ export function DesktopContactCard({
           WhatsApp Us
         </a>
       </div>
-      <div className="mt-6 border-t border-border pt-6">
+      <div className="mt-6 border-t border-white/10 pt-6">
         <LeadForm
           cities={cities}
           services={services}
@@ -44,6 +50,7 @@ export function DesktopContactCard({
           compact
           sourcePage={sourcePage}
         />
+      </div>
       </div>
     </aside>
   );

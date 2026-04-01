@@ -1,4 +1,5 @@
 import { comboPages, coverageZones, launchCities, reviews, services } from "@/lib/content/seed";
+import { cityAreaPages } from "@/lib/content/areas";
 
 export function getCities() {
   return launchCities;
@@ -24,6 +25,14 @@ export function getCityServicePage(citySlug: string, serviceSlug: string) {
 
 export function getCityReviews(citySlug: string) {
   return reviews.filter((review) => review.citySlug === citySlug);
+}
+
+export function getCityAreas(citySlug: string) {
+  return cityAreaPages.filter((area) => area.citySlug === citySlug);
+}
+
+export function getCityArea(citySlug: string, areaSlug: string) {
+  return cityAreaPages.find((area) => area.citySlug === citySlug && area.areaSlug === areaSlug);
 }
 
 export function getFeaturedReviews() {
