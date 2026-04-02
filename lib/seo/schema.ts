@@ -4,7 +4,7 @@ export function createLocalBusinessSchema(city: City) {
   return {
     "@context": "https://schema.org",
     "@type": "Plumber",
-    name: `PlumbRight ${city.name}`,
+    name: `Plumberdost ${city.name}`,
     address: {
       "@type": "PostalAddress",
       addressLocality: city.name,
@@ -29,7 +29,7 @@ export function createServiceSchema(city: City, service: Service) {
     serviceType: service.name,
     provider: {
       "@type": "Organization",
-      name: "PlumbRight"
+      name: "Plumberdost"
     },
     areaServed: city.name,
     offers: {
@@ -68,7 +68,7 @@ export function createReviewSchema(city: City, cityReviews: Review[]) {
     reviewBody: review.reviewText,
     itemReviewed: {
       "@type": "LocalBusiness",
-      name: `PlumbRight ${city.name}`
+      name: `Plumberdost ${city.name}`
     }
   }));
 }
@@ -77,7 +77,7 @@ export function createAreaLocalBusinessSchema(city: City, area: AreaPage) {
   return {
     "@context": "https://schema.org",
     "@type": "Plumber",
-    name: `PlumbRight ${area.areaName}, ${city.name}`,
+    name: `Plumberdost ${area.areaName}, ${city.name}`,
     areaServed: [area.areaName, city.name],
     address: {
       "@type": "PostalAddress",

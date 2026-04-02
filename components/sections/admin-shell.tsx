@@ -22,7 +22,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-bg">
       <div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 lg:grid-cols-[260px_1fr]">
         <aside className="rounded-[28px] bg-primary p-6 text-white lg:sticky lg:top-24 lg:h-fit">
-          <p className="font-display text-2xl">PlumbRight Admin</p>
+          <p className="font-display text-2xl">Plumberdost Admin</p>
           <p className="mt-2 text-sm text-white/70">
             Internal operations console for lead routing, city readiness, service coverage, and proof management.
           </p>

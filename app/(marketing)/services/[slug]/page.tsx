@@ -24,7 +24,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${service.name} | PlumbRight`,
+    title: `${service.name} | Plumberdost`,
     description: service.shortDescription
   };
 }
@@ -45,7 +45,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           "@context": "https://schema.org",
           "@type": "Service",
           serviceType: service.name,
-          provider: { "@type": "Organization", name: "PlumbRight" }
+          provider: { "@type": "Organization", name: "Plumberdost" }
         }}
       />
       <section className="grid gap-8 lg:grid-cols-[1fr_380px]">

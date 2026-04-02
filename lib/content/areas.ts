@@ -201,7 +201,7 @@ const bodyTemplates = [
   (city: City, areaName: string) =>
     `${areaName} in ${city.name} tends to generate urgent plumbing demand around leakage control, choke removal, bathroom fixture failures, and water pressure instability in both flats and independent homes.`,
   (city: City, areaName: string) =>
-    `PlumbRight builds ${areaName} coverage around fast phone pickup, clear service pricing, and technician routing that matches the local density, building style, and same-day service expectation within ${city.name}.`,
+    `Plumberdost builds ${areaName} coverage around fast phone pickup, clear service pricing, and technician routing that matches the local density, building style, and same-day service expectation within ${city.name}.`,
   (city: City, areaName: string) =>
     `Instead of pushing users into a generic city page, this ${areaName} page is written to answer local intent directly, with service links, response expectations, and area-specific trust signals that help conversion without thin copy.`
 ];
@@ -279,7 +279,7 @@ function createAreaPage(city: City, areaName: string, position: number): AreaPag
     areaName,
     areaSlug: slugifyArea(areaName),
     heroHeadline: `Plumber Services in ${areaName}, ${city.name}`,
-    metaTitle: `Plumber in ${areaName}, ${city.name} | Same-Day Plumbing Service | PlumbRight`,
+    metaTitle: `Plumber in ${areaName}, ${city.name} | Same-Day Plumbing Service | Plumberdost`,
     metaDescription: `Book a trusted plumber in ${areaName}, ${city.name} for pipe leakage, blockage, bathroom fitting, tank repair, and urgent same-day support with clear local response times.`,
     bodyCopy: [
       bodyTemplates[primary](city, areaName),

@@ -5,7 +5,7 @@ export default function AboutPage() {
       <h1 className="mt-3 font-display text-5xl text-primary">A local SEO and lead-ops engine disguised as a plumbing brand.</h1>
       <div className="mt-8 space-y-5 text-lg leading-8 text-muted">
         <p>
-          PlumbRight is designed around one reality: plumbing customers search with urgent,
+          Plumberdost is designed around one reality: plumbing customers search with urgent,
           hyper-local intent. The product is built to meet that intent with fast page loads, clear
           trust signals, and immediate contact paths.
         </p>

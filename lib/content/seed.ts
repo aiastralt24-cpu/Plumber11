@@ -241,7 +241,7 @@ function buildCityBodyCopy(name: string, slug: string, index: number) {
   const variants = [
     [
       `${name} is mapped as a high-intent local plumbing market where users usually need quick reassurance on response time, price range, and whether a verified technician can reach their exact locality without delay.`,
-      `PlumbRight ${name} is structured to convert those visits into calls, WhatsApp chats, and form enquiries by combining local service intent, visible trust markers, and deeper page coverage than a generic city listing.`
+      `Plumberdost ${name} is structured to convert those visits into calls, WhatsApp chats, and form enquiries by combining local service intent, visible trust markers, and deeper page coverage than a generic city listing.`
     ],
     [
       `In ${name}, plumbing demand often clusters around apartment maintenance, kitchen and bathroom leakage, drainage blockages, and urgent overflow situations that require a dispatch-led local page rather than a broad marketplace directory.`,
@@ -249,7 +249,7 @@ function buildCityBodyCopy(name: string, slug: string, index: number) {
     ],
     [
       `${name} works best as a city-first SEO market because plumbing search intent is usually immediate, location-sensitive, and trust-sensitive at the same time.`,
-      `That is why the PlumbRight ${name} page combines local response signals, structured service detail, and area coverage cues in a way that feels useful to real users while still creating room for scalable search coverage.`
+      `That is why the Plumberdost ${name} page combines local response signals, structured service detail, and area coverage cues in a way that feels useful to real users while still creating room for scalable search coverage.`
     ]
   ];
 
@@ -270,7 +270,7 @@ function buildComboBody(city: City, service: Service, index: number) {
     ],
     [
       `${city.name} searchers looking for ${service.name.toLowerCase()} often compare speed, trust, and pricing transparency before they compare anything else.`,
-      `PlumbRight uses this ${city.name} page to make those decisions easier with area-aware routing, service-specific context, and a layout focused on real plumbing intent instead of thin keyword stuffing.`,
+      `Plumberdost uses this ${city.name} page to make those decisions easier with area-aware routing, service-specific context, and a layout focused on real plumbing intent instead of thin keyword stuffing.`,
       `That structure helps the page cover search depth, improve internal linking, and support better lead quality for ${service.name.toLowerCase()} requests inside ${city.name}.`
     ]
   ];
@@ -298,7 +298,7 @@ export const launchCities: City[] = supportedCityNames.map((name, index) => {
     jobsCompleted: override.jobsCompleted ?? Math.max(180, 1450 - index * 11),
     plumbersOnNetwork: override.plumbersOnNetwork ?? Math.max(10, 42 - Math.floor(index / 4)),
     heroImage: override.heroImage ?? cityImagePool[index % cityImagePool.length],
-    metaTitle: override.metaTitle ?? `Expert Plumbers in ${name} | 24/7 Fast Response | PlumbRight`,
+    metaTitle: override.metaTitle ?? `Expert Plumbers in ${name} | 24/7 Fast Response | Plumberdost`,
     metaDescription:
       override.metaDescription ??
       `Book trusted plumbers in ${name} for leakage, drainage, pipe fitting, bathroom repair, and urgent same-day support.`,
@@ -321,7 +321,7 @@ export const services: Service[] = [
     name: "Pipe Leakage Repair",
     shortDescription: "Pipe burst, hidden seepage, and urgent leak fixes.",
     fullDescription: [
-      "PlumbRight handles active leaks, wall seepage, and pipe bursts with city-dispatched technicians and transparent scope confirmation before work begins.",
+      "Plumberdost handles active leaks, wall seepage, and pipe bursts with city-dispatched technicians and transparent scope confirmation before work begins.",
       "Each service page explains the problem, typical causes, the visit process, and indicative local pricing so users can act without uncertainty."
     ],
     iconName: "Droplets",
