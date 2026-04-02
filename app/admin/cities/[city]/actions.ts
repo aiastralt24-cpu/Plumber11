@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
-import { getCity, getService, getServices } from "@/lib/domain/catalog";
+import { getCity, getCityAreas, getService, getServices } from "@/lib/domain/catalog";
 import { prisma } from "@/lib/db";
 
 async function assertAdminAccess() {
@@ -12,6 +12,19 @@ async function assertAdminAccess() {
 
   if (!session && !localPreviewMode) {
     throw new Error("Unauthorized");
+  }
+}
+
+function revalidateCityMarketingRoutes(citySlug: string) {
+  revalidatePath(`/${citySlug}/plumber-services`);
+  revalidatePath(`/${citySlug}/emergency-plumber`);
+
+  for (const service of getServices()) {
+    revalidatePath(`/${citySlug}/${service.slug}`);
+  }
+
+  for (const area of getCityAreas(citySlug)) {
+    revalidatePath(`/${citySlug}/areas/${area.areaSlug}`);
   }
 }
 
@@ -49,8 +62,7 @@ export async function updateCitySettings(formData: FormData) {
 
   revalidatePath(`/admin/cities/${city.slug}`);
   revalidatePath("/admin/cities");
-  revalidatePath(`/${city.slug}/plumber-services`);
-  revalidatePath(`/${city.slug}/emergency-plumber`);
+  revalidateCityMarketingRoutes(city.slug);
 }
 
 export async function updateCityPricing(formData: FormData) {
@@ -131,4 +143,6 @@ export async function seedCityPricing(formData: FormData) {
   );
 
   revalidatePath(`/admin/cities/${city.slug}`);
+  revalidatePath("/admin/cities");
+  revalidateCityMarketingRoutes(city.slug);
 }

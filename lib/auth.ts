@@ -22,18 +22,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const parsed = credentialsSchema.safeParse(credentials);
         const adminEmail = process.env.ADMIN_EMAIL;
         const adminPassword = process.env.ADMIN_PASSWORD;
+        const localPreviewMode =
+          process.env.NODE_ENV !== "production" && process.env.ALLOW_ADMIN_BYPASS === "true";
 
         if (!parsed.success) {
           return null;
         }
 
         if (!adminEmail || !adminPassword) {
-          const localPreviewMode =
-            process.env.NODE_ENV !== "production" && process.env.ALLOW_ADMIN_BYPASS === "true";
-
-          if (!localPreviewMode) {
-            return null;
+          if (localPreviewMode) {
+            return {
+              id: "local-preview-admin",
+              email: parsed.data.email,
+              name: "Local Preview Admin"
+            };
           }
+
+          return null;
         }
 
         if (parsed.data.email === adminEmail && parsed.data.password === adminPassword) {
