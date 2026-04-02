@@ -7,6 +7,10 @@ import {
   getServices
 } from "@/lib/domain/catalog";
 
+function logCatalogFallback(scope: string, error: unknown) {
+  console.error(`[catalog-managed] Falling back to seed data for ${scope}`, error);
+}
+
 export async function getManagedCity(citySlug: string) {
   const baseCity = getCity(citySlug);
 
@@ -14,9 +18,16 @@ export async function getManagedCity(citySlug: string) {
     return undefined;
   }
 
-  const cityRecord = await prisma.city.findUnique({
-    where: { slug: citySlug }
-  });
+  let cityRecord = null;
+
+  try {
+    cityRecord = await prisma.city.findUnique({
+      where: { slug: citySlug }
+    });
+  } catch (error) {
+    logCatalogFallback(`city:${citySlug}`, error);
+    return baseCity;
+  }
 
   if (!cityRecord) {
     return baseCity;
@@ -41,9 +52,16 @@ export async function getManagedService(serviceSlug: string) {
     return undefined;
   }
 
-  const serviceRecord = await prisma.service.findUnique({
-    where: { slug: serviceSlug }
-  });
+  let serviceRecord = null;
+
+  try {
+    serviceRecord = await prisma.service.findUnique({
+      where: { slug: serviceSlug }
+    });
+  } catch (error) {
+    logCatalogFallback(`service:${serviceSlug}`, error);
+    return baseService;
+  }
 
   if (!serviceRecord) {
     return baseService;
@@ -69,14 +87,22 @@ export async function getManagedServicesForCity(citySlug: string) {
     return [];
   }
 
-  const [serviceRecords, pricingRecords] = await Promise.all([
-    prisma.service.findMany({
-      where: { slug: { in: services.map((service) => service.slug) } }
-    }),
-    prisma.cityServicePage.findMany({
-      where: { cityId: city.id }
-    })
-  ]);
+  let serviceRecords = [] as Awaited<ReturnType<typeof prisma.service.findMany>>;
+  let pricingRecords = [] as Awaited<ReturnType<typeof prisma.cityServicePage.findMany>>;
+
+  try {
+    [serviceRecords, pricingRecords] = await Promise.all([
+      prisma.service.findMany({
+        where: { slug: { in: services.map((service) => service.slug) } }
+      }),
+      prisma.cityServicePage.findMany({
+        where: { cityId: city.id }
+      })
+    ]);
+  } catch (error) {
+    logCatalogFallback(`services-for-city:${citySlug}`, error);
+    return services;
+  }
 
   return services.map((service) => {
     const serviceRecord = serviceRecords.find((item) => item.slug === service.slug);
@@ -104,14 +130,21 @@ export async function getManagedCityServicePage(citySlug: string, serviceSlug: s
     return undefined;
   }
 
-  const record = await prisma.cityServicePage.findUnique({
-    where: {
-      cityId_serviceId: {
-        cityId: city.id,
-        serviceId: service.id
+  let record = null;
+
+  try {
+    record = await prisma.cityServicePage.findUnique({
+      where: {
+        cityId_serviceId: {
+          cityId: city.id,
+          serviceId: service.id
+        }
       }
-    }
-  });
+    });
+  } catch (error) {
+    logCatalogFallback(`city-service:${citySlug}:${serviceSlug}`, error);
+    return baseCombo;
+  }
 
   if (!record) {
     return baseCombo;
@@ -129,9 +162,16 @@ export async function getManagedCityServicePage(citySlug: string, serviceSlug: s
 
 export async function getManagedCities() {
   const cities = getCities();
-  const cityRecords = await prisma.city.findMany({
-    where: { slug: { in: cities.map((city) => city.slug) } }
-  });
+  let cityRecords = [] as Awaited<ReturnType<typeof prisma.city.findMany>>;
+
+  try {
+    cityRecords = await prisma.city.findMany({
+      where: { slug: { in: cities.map((city) => city.slug) } }
+    });
+  } catch (error) {
+    logCatalogFallback("cities", error);
+    return cities;
+  }
 
   return cities.map((city) => {
     const cityRecord = cityRecords.find((item) => item.slug === city.slug);
