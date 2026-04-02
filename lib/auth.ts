@@ -45,7 +45,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return {
             id: "internal-admin",
             email: parsed.data.email,
-            name: "PlumbRight Admin"
+            name: "Plumberdost Admin"
           };
         }
 

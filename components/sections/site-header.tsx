@@ -18,7 +18,7 @@ export function SiteHeader() {
           <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/12 bg-white/6 text-lg text-accent">
             ◔
           </span>
-          <span className="text-white">PlumbRight</span>
+          <span className="text-white">Plumberdost</span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm text-white/78 lg:flex">
           {nav.map((item) => (

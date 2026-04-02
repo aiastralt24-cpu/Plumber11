@@ -9,7 +9,7 @@ export function SiteFooter() {
     <footer className="border-t border-border bg-primary px-4 py-16 text-white sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-4">
         <div>
-          <p className="font-display text-2xl">PlumbRight</p>
+          <p className="font-display text-2xl">Plumberdost</p>
           <p className="mt-3 max-w-sm text-sm text-white/70">
             City-first plumbing lead generation platform built for fast local response, clean
             routing, and conversion-first UX.
@@ -57,7 +57,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="mx-auto mt-10 max-w-7xl border-t border-white/10 pt-6 text-sm text-white/60">
-        © 2026 PlumbRight. GST and license fields are reserved in CMS and admin metadata.
+        © 2026 Plumberdost. GST and license fields are reserved in CMS and admin metadata.
       </div>
     </footer>
   );
