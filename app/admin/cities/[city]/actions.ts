@@ -7,7 +7,8 @@ import { prisma } from "@/lib/db";
 
 async function assertAdminAccess() {
   const session = await auth();
-  const localPreviewMode = process.env.DATABASE_URL?.startsWith("file:");
+  const localPreviewMode =
+    process.env.NODE_ENV !== "production" && process.env.ALLOW_ADMIN_BYPASS === "true";
 
   if (!session && !localPreviewMode) {
     throw new Error("Unauthorized");
