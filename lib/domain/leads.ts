@@ -128,7 +128,7 @@ export async function updateLeadCrmId(leadId: string, crmLeadId: string) {
 }
 
 export async function getAdminLeadDashboard() {
-  const [leadCount, leadsByStatus, recentLeads] = await Promise.all([
+  const [leadCount, leadsByStatus, leadsBySource, leadsByCity, recentLeads] = await Promise.all([
     prisma.lead.count(),
     prisma.lead.groupBy({
       by: ["status"],
@@ -136,9 +136,21 @@ export async function getAdminLeadDashboard() {
         status: true
       }
     }),
+    prisma.lead.groupBy({
+      by: ["sourceChannel"],
+      _count: {
+        sourceChannel: true
+      }
+    }),
+    prisma.lead.groupBy({
+      by: ["cityId"],
+      _count: {
+        cityId: true
+      }
+    }),
     prisma.lead.findMany({
       orderBy: { createdAt: "desc" },
-      take: 8,
+      take: 10,
       include: {
         city: { select: { name: true, slug: true } },
         service: { select: { name: true, slug: true } }
@@ -146,9 +158,19 @@ export async function getAdminLeadDashboard() {
     })
   ]);
 
+  const urgentLeadCount = await prisma.lead.count({
+    where: { urgency: "urgent" }
+  });
+
+  const newLeadCount = leadsByStatus.find((item) => item.status === "new")?._count.status ?? 0;
+
   return {
     leadCount,
+    urgentLeadCount,
+    newLeadCount,
     leadsByStatus,
+    leadsBySource,
+    leadsByCity,
     recentLeads
   };
 }

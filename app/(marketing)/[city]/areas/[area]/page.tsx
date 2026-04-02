@@ -5,7 +5,8 @@ import { ArrowRight, MapPin, PhoneCall, ShieldCheck } from "lucide-react";
 import { DesktopContactCard } from "@/components/sections/desktop-contact-card";
 import { StickyCTA } from "@/components/sections/sticky-cta";
 import { JsonLd } from "@/components/ui/json-ld";
-import { getCities, getCity, getCityArea, getCityAreas, getServices } from "@/lib/domain/catalog";
+import { getCities, getCityArea, getCityAreas } from "@/lib/domain/catalog";
+import { getManagedCities, getManagedCity, getManagedServicesForCity } from "@/lib/domain/catalog-managed";
 import { buildAreaMetadata } from "@/lib/seo/metadata";
 import { createAreaLocalBusinessSchema, createFaqSchema } from "@/lib/seo/schema";
 
@@ -34,15 +35,15 @@ export default async function CityAreaPage({
   params: Promise<{ city: string; area: string }>;
 }) {
   const { city: citySlug, area: areaSlug } = await params;
-  const city = getCity(citySlug);
+  const city = await getManagedCity(citySlug);
   const area = getCityArea(citySlug, areaSlug);
 
   if (!city || !area) {
     notFound();
   }
 
-  const cities = getCities();
-  const services = getServices();
+  const cities = await getManagedCities();
+  const services = await getManagedServicesForCity(citySlug);
   const nearbyAreas = getCityAreas(city.slug).filter((item) => item.areaSlug !== area.areaSlug).slice(0, 6);
 
   return (

@@ -7,7 +7,8 @@ import { DesktopContactCard } from "@/components/sections/desktop-contact-card";
 import { StickyCTA } from "@/components/sections/sticky-cta";
 import { JsonLd } from "@/components/ui/json-ld";
 import { ServiceIcon } from "@/components/ui/service-icon";
-import { getCities, getCity, getCityAreas, getCityReviews, getServices } from "@/lib/domain/catalog";
+import { getCities, getCityAreas, getCityReviews } from "@/lib/domain/catalog";
+import { getManagedCities, getManagedCity, getManagedServicesForCity } from "@/lib/domain/catalog-managed";
 import { buildCityMetadata } from "@/lib/seo/metadata";
 import { createFaqSchema, createLocalBusinessSchema, createReviewSchema } from "@/lib/seo/schema";
 import { formatCurrency } from "@/lib/utils/format";
@@ -22,7 +23,7 @@ export async function generateMetadata({
   params: Promise<{ city: string }>;
 }): Promise<Metadata> {
   const { city: citySlug } = await params;
-  const city = getCity(citySlug);
+  const city = await getManagedCity(citySlug);
   return city ? buildCityMetadata(city) : {};
 }
 
@@ -32,9 +33,9 @@ export default async function CityLandingPage({
   params: Promise<{ city: string }>;
 }) {
   const { city: citySlug } = await params;
-  const city = getCity(citySlug);
-  const cities = getCities();
-  const services = getServices();
+  const city = await getManagedCity(citySlug);
+  const cities = await getManagedCities();
+  const services = await getManagedServicesForCity(citySlug);
 
   if (!city) {
     notFound();

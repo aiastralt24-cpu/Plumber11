@@ -20,15 +20,28 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       authorize: async (credentials) => {
         const parsed = credentialsSchema.safeParse(credentials);
+        const adminEmail = process.env.ADMIN_EMAIL;
+        const adminPassword = process.env.ADMIN_PASSWORD;
+        const localPreviewMode =
+          process.env.NODE_ENV !== "production" && process.env.ALLOW_ADMIN_BYPASS === "true";
 
         if (!parsed.success) {
           return null;
         }
 
-        if (
-          parsed.data.email === (process.env.ADMIN_EMAIL ?? "admin@plumbri.ght") &&
-          parsed.data.password === (process.env.ADMIN_PASSWORD ?? "plumbright-admin")
-        ) {
+        if (!adminEmail || !adminPassword) {
+          if (localPreviewMode) {
+            return {
+              id: "local-preview-admin",
+              email: parsed.data.email,
+              name: "Local Preview Admin"
+            };
+          }
+
+          return null;
+        }
+
+        if (parsed.data.email === adminEmail && parsed.data.password === adminPassword) {
           return {
             id: "internal-admin",
             email: parsed.data.email,
