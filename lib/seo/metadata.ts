@@ -5,15 +5,14 @@ import { siteConfig } from "@/lib/seo/site-config";
 export function buildDefaultMetadata(): Metadata {
   return {
     metadataBase: new URL(siteConfig.url),
-    title: `${siteConfig.name} | City-First Plumbing Lead Engine`,
+    title: `${siteConfig.name} | Emergency & Same-Day Plumbers Across Indian Cities`,
     description: siteConfig.description,
     alternates: {
       canonical: "/"
     },
     openGraph: {
-      title: siteConfig.name,
-      description:
-        "City-first plumbing lead generation platform built for speed, SEO coverage, and conversion.",
+      title: `${siteConfig.name} | Emergency & Same-Day Plumbers Across Indian Cities`,
+      description: siteConfig.description,
       url: siteConfig.url,
       siteName: siteConfig.name,
       locale: "en_IN",
@@ -21,7 +20,7 @@ export function buildDefaultMetadata(): Metadata {
     },
     twitter: {
       card: "summary_large_image",
-      title: siteConfig.name,
+      title: `${siteConfig.name} | Emergency & Same-Day Plumbers Across Indian Cities`,
       description: siteConfig.description
     }
   };
