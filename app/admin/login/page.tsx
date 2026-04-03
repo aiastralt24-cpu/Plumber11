@@ -39,7 +39,7 @@ export default function AdminLoginPage() {
           Local preview shortcut: open <span className="font-semibold text-primary">/admin</span> directly when using the file-based dev database.
         </p>
         <div className="mt-6 space-y-4">
-          <Input name="email" placeholder="admin@plumbri.ght" type="email" />
+          <Input name="email" placeholder="admin@plumberdost.com" type="email" />
           <Input name="password" placeholder="Password" type="password" />
           <Button fullWidth type="submit">
             Sign In

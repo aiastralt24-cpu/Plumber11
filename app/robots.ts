@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { siteConfig } from "@/lib/seo/site-config";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -7,6 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/admin", "/api", "/preview", "/draft"]
     },
-    sitemap: "https://plumbri.ght/sitemap.xml"
+    sitemap: `${siteConfig.url}/sitemap.xml`,
+    host: siteConfig.domain
   };
 }
