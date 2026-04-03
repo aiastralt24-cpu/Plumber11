@@ -1,10 +1,10 @@
 export function HeroVisual() {
   return (
-    <div className="relative h-full min-h-[540px] overflow-hidden bg-[linear-gradient(180deg,#132f4d_0%,#081a2c_100%)] sm:min-h-[620px]">
+    <div className="relative h-full min-h-[320px] overflow-hidden bg-[linear-gradient(180deg,#132f4d_0%,#081a2c_100%)] sm:min-h-[620px]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(255,255,255,0.08),transparent_18%),radial-gradient(circle_at_74%_18%,rgba(232,96,28,0.18),transparent_22%),linear-gradient(90deg,rgba(8,22,38,0.24)_0%,rgba(8,22,38,0.12)_45%,rgba(8,22,38,0)_100%)]" />
       <div className="absolute inset-y-0 left-0 w-[42%] bg-[linear-gradient(90deg,rgba(6,20,35,0.82)_0%,rgba(6,20,35,0.48)_65%,rgba(6,20,35,0)_100%)]" />
 
-      <div className="absolute right-[-3%] top-[3%] h-[92%] w-[78%]">
+      <div className="absolute right-[-6%] top-[6%] h-[90%] w-[86%] sm:right-[-3%] sm:top-[3%] sm:w-[78%]">
         <div className="absolute inset-0 rounded-l-[40px] bg-[radial-gradient(circle_at_50%_24%,rgba(255,255,255,0.24),transparent_16%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0))]" />
 
         <div className="absolute bottom-0 left-[12%] h-[84%] w-[58%]">
@@ -24,7 +24,7 @@ export function HeroVisual() {
         <div className="absolute bottom-[8%] left-[4%] h-[7%] w-[28%] rounded-[999px] bg-black/28 blur-xl" />
       </div>
 
-      <div className="absolute left-[6%] top-[8%] rounded-full border border-white/10 bg-white/6 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-white/76">
+      <div className="absolute left-[6%] top-[8%] rounded-full border border-white/10 bg-white/6 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/76 sm:px-4 sm:text-[11px] sm:tracking-[0.24em]">
         Verified crew on call
       </div>
     </div>

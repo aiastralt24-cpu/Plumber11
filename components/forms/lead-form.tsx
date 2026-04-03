@@ -96,16 +96,16 @@ export function LeadForm({
   if (quickFlow) {
     return (
       <form
-        className="overflow-hidden rounded-[30px] border border-[#d9d1c3] bg-[linear-gradient(180deg,#fffdfa_0%,#f6efe4_100%)] shadow-[0_28px_80px_rgba(15,35,58,0.14)]"
+        className="overflow-hidden rounded-[24px] border border-[#d9d1c3] bg-[linear-gradient(180deg,#fffdfa_0%,#f6efe4_100%)] shadow-[0_28px_80px_rgba(15,35,58,0.14)] sm:rounded-[30px]"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <div className="border-b border-primary/10 bg-white px-6 py-5">
+        <div className="border-b border-primary/10 bg-white px-5 py-4 sm:px-6 sm:py-5">
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-teal">
                 Fast booking
               </p>
-              <h3 className="mt-2 text-2xl font-semibold text-primary">
+              <h3 className="mt-2 text-[1.75rem] font-semibold leading-[1.1] text-primary sm:text-2xl">
                 Book a plumber in under 30 seconds.
               </h3>
               <p className="mt-2 max-w-lg text-sm leading-6 text-muted">
@@ -113,7 +113,7 @@ export function LeadForm({
                 are ready to confirm.
               </p>
             </div>
-            <div className="hidden rounded-full border border-primary/10 bg-primary/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-primary/70 md:block">
+            <div className="hidden rounded-full border border-primary/10 bg-primary/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-primary/70 lg:block">
               Step {step} of 2
             </div>
           </div>
@@ -131,7 +131,7 @@ export function LeadForm({
           </div>
         </div>
 
-        <div className="space-y-4 p-6">
+        <div className="space-y-4 p-5 sm:p-6">
           {step === 1 ? (
             <>
               <div>

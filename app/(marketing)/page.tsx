@@ -42,27 +42,27 @@ export default function HomePage() {
         <div className="absolute inset-y-0 right-0 w-[58%] bg-[radial-gradient(circle_at_center,rgba(232,96,28,0.16),transparent_60%)] blur-3xl" />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,20,35,0.98)_0%,rgba(8,25,44,0.94)_36%,rgba(8,25,44,0.68)_58%,rgba(8,25,44,0.28)_100%)]" />
 
-        <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-8 sm:px-6 lg:px-8 lg:pb-14 lg:pt-10">
-          <div className="grid items-center gap-10 lg:grid-cols-[0.84fr_1.16fr]">
-            <div className="z-10 max-w-xl py-4 lg:py-10">
-              <div className="inline-flex items-center gap-3 rounded-full border border-success/25 bg-success/10 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-success">
+        <div className="relative mx-auto max-w-7xl px-4 pb-10 pt-6 sm:px-6 lg:px-8 lg:pb-14 lg:pt-10">
+          <div className="grid items-center gap-8 lg:grid-cols-[0.84fr_1.16fr] lg:gap-10">
+            <div className="z-10 max-w-xl py-2 lg:py-10">
+              <div className="inline-flex w-full max-w-[320px] items-center justify-between gap-2 rounded-full border border-success/25 bg-success/10 px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-success sm:w-auto sm:max-w-none sm:justify-start sm:gap-3 sm:px-5 sm:text-xs sm:tracking-[0.24em]">
                 <span className="h-2.5 w-2.5 rounded-full bg-success" />
-                Available now
+                <span>Available now</span>
                 <span className="text-white/32">•</span>
-                Live in {primaryCity.name}
+                <span>Live in {primaryCity.name}</span>
               </div>
 
-              <h1 className="mt-8 max-w-3xl font-display text-5xl leading-[0.95] text-white sm:text-6xl lg:text-7xl">
+              <h1 className="mt-6 max-w-3xl font-display text-[2.75rem] leading-[0.96] text-white sm:mt-8 sm:text-6xl lg:text-7xl">
                 Need a plumber in <span className="text-accent">30 minutes?</span>
                 <br />
                 Book instantly.
               </h1>
 
-              <p className="mt-6 max-w-lg text-xl leading-9 text-white/78">
+              <p className="mt-5 max-w-lg text-lg leading-8 text-white/78 sm:mt-6 sm:text-xl sm:leading-9">
                 Verified professionals. Fixed pricing. Fast response in your city.
               </p>
 
-              <div className="mt-8 grid gap-3 sm:grid-cols-3">
+              <div className="mt-6 grid gap-3 sm:mt-8 sm:grid-cols-3">
                 {[
                   { icon: Star, label: `${averageRating}★`, copy: `${featuredReviews.length} featured reviews` },
                   {
@@ -77,11 +77,11 @@ export default function HomePage() {
                   return (
                     <div
                       key={item.label}
-                      className="rounded-[22px] border border-white/10 bg-white/6 px-4 py-4 shadow-[0_14px_40px_rgba(0,0,0,0.18)] backdrop-blur"
+                      className="rounded-[20px] border border-white/10 bg-white/6 px-4 py-3.5 shadow-[0_14px_40px_rgba(0,0,0,0.18)] backdrop-blur sm:rounded-[22px] sm:py-4"
                     >
                       <div className="flex items-center gap-2 text-white">
                         <Icon className="h-4 w-4 text-accent" />
-                        <span className="text-lg font-semibold">{item.label}</span>
+                        <span className="text-base font-semibold sm:text-lg">{item.label}</span>
                       </div>
                       <p className="mt-1 text-sm text-white/65">{item.copy}</p>
                     </div>
@@ -89,49 +89,49 @@ export default function HomePage() {
                 })}
               </div>
 
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <div className="mt-7 flex flex-col gap-2.5 sm:mt-8 sm:flex-row sm:items-center sm:gap-3">
                 <Link
                   href="#hero-booking"
-                  className="inline-flex min-h-16 items-center justify-center rounded-[22px] bg-accent px-8 py-4 text-lg font-semibold text-white shadow-[0_22px_50px_rgba(232,96,28,0.35)]"
+                  className="inline-flex min-h-14 items-center justify-center rounded-[20px] bg-accent px-6 py-4 text-base font-semibold text-white shadow-[0_22px_50px_rgba(232,96,28,0.35)] sm:min-h-16 sm:rounded-[22px] sm:px-8 sm:text-lg"
                 >
                   Book Plumber Now
                   <ArrowRight className="ml-3 h-5 w-5" />
                 </Link>
                 <Link
                   href="/services"
-                  className="inline-flex min-h-16 items-center justify-center rounded-[22px] px-4 py-4 text-base font-semibold text-white/70 transition hover:text-white"
+                  className="inline-flex min-h-11 items-center justify-start rounded-[18px] px-1 py-2 text-sm font-semibold text-white/70 transition hover:text-white sm:min-h-16 sm:justify-center sm:rounded-[22px] sm:px-4 sm:py-4 sm:text-base"
                 >
                   View services
                 </Link>
               </div>
 
-              <div className="mt-6 flex items-center gap-4 text-sm text-white/76">
-                <div className="flex -space-x-3">
+              <div className="mt-5 flex items-center gap-3 text-sm text-white/76 sm:mt-6 sm:gap-4">
+                <div className="flex -space-x-2 sm:-space-x-3">
                   {[0, 1, 2, 3].map((index) => (
                     <div
                       key={index}
-                      className="h-10 w-10 rounded-full border-2 border-primary bg-[linear-gradient(135deg,#f2c7a5,#9db4c7)]"
+                      className="h-8 w-8 rounded-full border-2 border-primary bg-[linear-gradient(135deg,#f2c7a5,#9db4c7)] sm:h-10 sm:w-10"
                     />
                   ))}
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 text-xs sm:text-sm">
                   <span className="h-2.5 w-2.5 rounded-full bg-success" />
                   <span>{primaryCity.plumbersOnNetwork} plumbers active in {primaryCity.name}</span>
                 </div>
               </div>
             </div>
 
-            <div className="relative min-h-[540px] lg:min-h-[700px]">
-              <div className="absolute inset-0 overflow-hidden rounded-[38px] border border-white/10 bg-[#0d2036] shadow-[0_36px_100px_rgba(3,10,18,0.42)]">
+            <div className="relative min-h-[400px] lg:min-h-[700px]">
+              <div className="absolute inset-0 overflow-hidden rounded-[30px] border border-white/10 bg-[#0d2036] shadow-[0_36px_100px_rgba(3,10,18,0.42)] sm:rounded-[38px]">
                 <HeroVisual />
               </div>
-              <div id="hero-booking" className="relative mx-auto max-w-md px-2 pt-[310px] sm:px-0 lg:absolute lg:bottom-6 lg:right-6 lg:w-[380px] lg:pt-0">
+              <div id="hero-booking" className="relative mx-auto max-w-md px-0 pt-[220px] sm:px-0 sm:pt-[310px] lg:absolute lg:bottom-6 lg:right-6 lg:w-[380px] lg:pt-0">
                 <LeadForm cities={cities} mode="quick" services={services} sourcePage="/" />
               </div>
             </div>
           </div>
 
-          <div className="relative z-10 mt-8 grid gap-4 rounded-[30px] border border-primary/10 bg-white p-4 text-primary shadow-[0_24px_80px_rgba(12,24,42,0.16)] md:grid-cols-4 md:p-6">
+          <div className="relative z-10 mt-6 grid gap-3 rounded-[24px] border border-primary/10 bg-white p-4 text-primary shadow-[0_24px_80px_rgba(12,24,42,0.16)] md:mt-8 md:grid-cols-4 md:gap-4 md:rounded-[30px] md:p-6">
             {[
               ["1. Book", "Tell us the issue"],
               ["2. Confirm", "We call to verify"],
@@ -140,9 +140,9 @@ export default function HomePage() {
             ].map(([title, copy], index) => (
               <div
                 key={title}
-                className="flex items-start gap-4 border-b border-primary/10 pb-4 last:border-b-0 last:pb-0 md:border-b-0 md:border-r md:pb-0 md:last:border-r-0"
+                className="flex items-start gap-3 border-b border-primary/10 pb-3.5 last:border-b-0 last:pb-0 md:gap-4 md:border-b-0 md:border-r md:pb-0 md:last:border-r-0"
               >
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#fff0e6] text-accent">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#fff0e6] text-accent md:h-11 md:w-11">
                   {index === 1 ? (
                     <PhoneCall className="h-5 w-5" />
                   ) : index === 2 ? (
@@ -154,7 +154,7 @@ export default function HomePage() {
                   )}
                 </div>
                 <div>
-                  <p className="text-lg font-semibold">{title}</p>
+                  <p className="text-base font-semibold md:text-lg">{title}</p>
                   <p className="mt-1 text-sm text-primary/62">{copy}</p>
                 </div>
               </div>
