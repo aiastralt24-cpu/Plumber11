@@ -2,11 +2,14 @@ import { notFound } from "next/navigation";
 import { PhoneCall, TimerReset } from "lucide-react";
 import { StickyCTA } from "@/components/sections/sticky-cta";
 import { JsonLd } from "@/components/ui/json-ld";
-import { getCities } from "@/lib/domain/catalog";
-import { getManagedCity } from "@/lib/domain/catalog-managed";
+import { getManagedCity, getManagedStaticCities } from "@/lib/domain/catalog-managed";
 
-export function generateStaticParams() {
-  return getCities().map((city) => ({ city: city.slug }));
+export const dynamicParams = true;
+export const revalidate = 21600;
+
+export async function generateStaticParams() {
+  const cities = await getManagedStaticCities(100);
+  return cities.map((city) => ({ city: city.slug }));
 }
 
 export default async function EmergencyCityPage({

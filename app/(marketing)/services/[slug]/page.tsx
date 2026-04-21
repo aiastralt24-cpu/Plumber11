@@ -4,11 +4,14 @@ import { ArrowRight } from "lucide-react";
 import { JsonLd } from "@/components/ui/json-ld";
 import { LeadForm } from "@/components/forms/lead-form";
 import { ServiceIcon } from "@/components/ui/service-icon";
-import { getCities, getService, getServices } from "@/lib/domain/catalog";
+import { getManagedCities, getManagedService, getManagedServices } from "@/lib/domain/catalog-managed";
 import { formatCurrency } from "@/lib/utils/format";
 
-export function generateStaticParams() {
-  return getServices().map((service) => ({ slug: service.slug }));
+export const revalidate = 21600;
+
+export async function generateStaticParams() {
+  const services = await getManagedServices();
+  return services.map((service) => ({ slug: service.slug }));
 }
 
 export async function generateMetadata({
@@ -17,7 +20,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const service = getService(slug);
+  const service = await getManagedService(slug);
 
   if (!service) {
     return {};
@@ -31,8 +34,11 @@ export async function generateMetadata({
 
 export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const service = getService(slug);
-  const cities = getCities();
+  const [service, cities, services] = await Promise.all([
+    getManagedService(slug),
+    getManagedCities(),
+    getManagedServices()
+  ]);
 
   if (!service) {
     notFound();
@@ -102,7 +108,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           </p>
           <LeadForm
             cities={cities}
-            services={getServices()}
+            services={services}
             defaultServiceSlug={service.slug}
             sourcePage={`/services/${slug}`}
           />

@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { getCities, getServices } from "@/lib/domain/catalog";
+import { getManagedCities, getManagedServices } from "@/lib/domain/catalog-managed";
 
-export function SiteFooter() {
-  const cities = getCities().slice(0, 6);
-  const services = getServices().slice(0, 6);
+export async function SiteFooter() {
+  const [cities, services] = await Promise.all([getManagedCities(), getManagedServices()]);
+  const footerCities = cities.slice(0, 6);
+  const footerServices = services.slice(0, 6);
 
   return (
     <footer className="border-t border-border bg-primary px-4 py-16 text-white sm:px-6 lg:px-8">
@@ -18,7 +19,7 @@ export function SiteFooter() {
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.24em] text-white/60">Cities</p>
           <ul className="mt-4 space-y-2 text-sm text-white/80">
-            {cities.map((city) => (
+            {footerCities.map((city) => (
               <li key={city.slug}>
                 <Link href={`/${city.slug}/plumber-services`}>{city.name}</Link>
               </li>
@@ -31,7 +32,7 @@ export function SiteFooter() {
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.24em] text-white/60">Services</p>
           <ul className="mt-4 space-y-2 text-sm text-white/80">
-            {services.map((service) => (
+            {footerServices.map((service) => (
               <li key={service.slug}>
                 <Link href={`/services/${service.slug}`}>{service.name}</Link>
               </li>
@@ -46,6 +47,15 @@ export function SiteFooter() {
             </li>
             <li>
               <Link href="/contact">Contact</Link>
+            </li>
+            <li>
+              <Link href="/verification-process">Verification Process</Link>
+            </li>
+            <li>
+              <Link href="/pricing-policy">Pricing Policy</Link>
+            </li>
+            <li>
+              <Link href="/review-policy">Review Policy</Link>
             </li>
             <li>
               <Link href="/privacy-policy">Privacy Policy</Link>

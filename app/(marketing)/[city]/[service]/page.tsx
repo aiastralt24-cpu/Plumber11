@@ -2,17 +2,31 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { DesktopContactCard } from "@/components/sections/desktop-contact-card";
+import { DirectAnswerGrid } from "@/components/sections/direct-answer-grid";
 import { StickyCTA } from "@/components/sections/sticky-cta";
 import { JsonLd } from "@/components/ui/json-ld";
-import { getCities, getCityAreas, getCityReviews, getServices } from "@/lib/domain/catalog";
-import { getManagedCity, getManagedCityServicePage, getManagedService, getManagedServicesForCity } from "@/lib/domain/catalog-managed";
+import { getCityReviews } from "@/lib/domain/catalog";
+import {
+  getManagedCities,
+  getManagedCity,
+  getManagedCityAreas,
+  getManagedCityServicePage,
+  getManagedService,
+  getManagedServices,
+  getManagedServicesForCity,
+  getManagedStaticCities
+} from "@/lib/domain/catalog-managed";
 import { buildCityServiceMetadata } from "@/lib/seo/metadata";
 import { createFaqSchema, createServiceSchema } from "@/lib/seo/schema";
 import { formatCurrency } from "@/lib/utils/format";
 
-export function generateStaticParams() {
-  return getCities().flatMap((city) =>
-    getServices().map((service) => ({ city: city.slug, service: service.slug }))
+export const dynamicParams = true;
+export const revalidate = 21600;
+
+export async function generateStaticParams() {
+  const [cities, services] = await Promise.all([getManagedStaticCities(50), getManagedServices()]);
+  return cities.flatMap((city) =>
+    services.map((service) => ({ city: city.slug, service: service.slug }))
   );
 }
 
@@ -37,7 +51,7 @@ export default async function CityServicePage({
   const service = await getManagedService(serviceSlug);
   const combo = await getManagedCityServicePage(citySlug, serviceSlug);
   const services = await getManagedServicesForCity(citySlug);
-  const areaPages = city ? getCityAreas(city.slug).slice(0, 6) : [];
+  const areaPages = city ? (await getManagedCityAreas(city.slug)).slice(0, 6) : [];
 
   if (!city || !service || !combo) {
     notFound();
@@ -85,6 +99,27 @@ export default async function CityServicePage({
               ))}
             </div>
           </section>
+
+          <DirectAnswerGrid
+            answers={[
+              {
+                question: `How fast can ${service.name.toLowerCase()} be handled in ${city.name}?`,
+                answer: `${city.name} requests are routed through the local dispatch flow, with urgent eligible jobs prioritised around the ${city.responseTimeMinutes}-minute response target.`
+              },
+              {
+                question: `What is the price for ${service.name.toLowerCase()} in ${city.name}?`,
+                answer: `The listed range is ${formatCurrency(combo.localPriceMin)} - ${formatCurrency(combo.localPriceMax)}. Final pricing is confirmed before work begins.`
+              },
+              {
+                question: `Which areas are covered for this service?`,
+                answer: `Popular ${city.name} localities are linked below, and phone or WhatsApp support can confirm availability for your exact area.`
+              },
+              {
+                question: "Can I book this service on WhatsApp?",
+                answer: `Yes. Share the issue, area, and preferred timing on WhatsApp at ${city.whatsappNumber} for quick confirmation.`
+              }
+            ]}
+          />
 
           <section className="rounded-[32px] bg-primary p-8 text-white shadow-panel">
             <h2 className="font-display text-4xl">How this visit works in {city.name}</h2>
@@ -136,7 +171,7 @@ export default async function CityServicePage({
         </div>
         <DesktopContactCard
           city={city}
-          cities={getCities()}
+          cities={await getManagedCities()}
           services={services}
           serviceSlug={service.slug}
           sourcePage={`/${citySlug}/${serviceSlug}`}

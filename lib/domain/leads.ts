@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import { getCity, getService } from "@/lib/domain/catalog";
+import { getManagedCity, getManagedService } from "@/lib/domain/catalog-managed";
 import type { LeadRecord, LeadSubmission } from "@/types/domain";
 
 function toLeadRecord(lead: {
@@ -39,8 +39,8 @@ function toLeadRecord(lead: {
 }
 
 export async function createLeadSubmission(input: LeadSubmission): Promise<LeadRecord> {
-  const city = getCity(input.citySlug);
-  const service = getService(input.serviceSlug);
+  const city = await getManagedCity(input.citySlug);
+  const service = await getManagedService(input.serviceSlug);
 
   if (!city || !service) {
     throw new Error("Invalid city or service selection.");
@@ -55,6 +55,8 @@ export async function createLeadSubmission(input: LeadSubmission): Promise<LeadR
       whatsappNumber: city.whatsappNumber,
       responseTimeMinutes: city.responseTimeMinutes,
       jobsCompleted: city.jobsCompleted,
+      plumbersOnNetwork: city.plumbersOnNetwork,
+      priorityTier: city.priorityTier ?? 3,
       isActive: city.launchReady
     },
     create: {
@@ -66,6 +68,8 @@ export async function createLeadSubmission(input: LeadSubmission): Promise<LeadR
       whatsappNumber: city.whatsappNumber,
       responseTimeMinutes: city.responseTimeMinutes,
       jobsCompleted: city.jobsCompleted,
+      plumbersOnNetwork: city.plumbersOnNetwork,
+      priorityTier: city.priorityTier ?? 3,
       isActive: city.launchReady
     }
   });

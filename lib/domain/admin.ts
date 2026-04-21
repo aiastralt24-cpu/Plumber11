@@ -1,9 +1,9 @@
 import { prisma } from "@/lib/db";
-import { getCities, getFeaturedReviews, getServices } from "@/lib/domain/catalog";
+import { getFeaturedReviews } from "@/lib/domain/catalog";
+import { getManagedCities, getManagedServices } from "@/lib/domain/catalog-managed";
 
 export async function getAdminOverviewStats() {
-  const cities = getCities();
-  const services = getServices();
+  const [cities, services] = await Promise.all([getManagedCities(), getManagedServices()]);
   const reviews = getFeaturedReviews();
   const [leadCount, urgentLeadCount] = await Promise.all([
     prisma.lead.count(),
@@ -68,8 +68,7 @@ export async function getAdminAnalyticsPageData() {
     })
   ]);
 
-  const cities = getCities();
-  const services = getServices();
+  const [cities, services] = await Promise.all([getManagedCities(), getManagedServices()]);
 
   return {
     byStatus,
@@ -90,7 +89,7 @@ export async function getAdminAnalyticsPageData() {
 }
 
 export async function getAdminCitiesPageData() {
-  const cities = getCities();
+  const cities = await getManagedCities();
   const [leadGroups, plumberGroups] = await Promise.all([
     prisma.lead.groupBy({
       by: ["cityId"],
@@ -112,7 +111,7 @@ export async function getAdminCitiesPageData() {
 }
 
 export async function getAdminServicesPageData() {
-  const services = getServices();
+  const services = await getManagedServices();
   const leadGroups = await prisma.lead.groupBy({
     by: ["serviceId"],
     _count: { serviceId: true }

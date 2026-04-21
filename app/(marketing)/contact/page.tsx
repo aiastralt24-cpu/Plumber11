@@ -1,7 +1,11 @@
 import { LeadForm } from "@/components/forms/lead-form";
-import { getCities, getServices } from "@/lib/domain/catalog";
+import { getManagedCities, getManagedServices } from "@/lib/domain/catalog-managed";
 
-export default function ContactPage() {
+export const revalidate = 21600;
+
+export default async function ContactPage() {
+  const [cities, services] = await Promise.all([getManagedCities(), getManagedServices()]);
+
   return (
     <main className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
       <section className="rounded-[32px] bg-white p-8 shadow-panel">
@@ -12,7 +16,7 @@ export default function ContactPage() {
           launch cities.
         </p>
         <div className="mt-8">
-          <LeadForm cities={getCities()} services={getServices()} sourcePage="/contact" />
+          <LeadForm cities={cities} services={services} sourcePage="/contact" />
         </div>
       </section>
     </main>

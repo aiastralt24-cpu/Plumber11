@@ -3,16 +3,29 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ArrowRight, MapPin, PhoneCall, ShieldCheck } from "lucide-react";
 import { DesktopContactCard } from "@/components/sections/desktop-contact-card";
+import { DirectAnswerGrid } from "@/components/sections/direct-answer-grid";
 import { StickyCTA } from "@/components/sections/sticky-cta";
 import { JsonLd } from "@/components/ui/json-ld";
-import { getCities, getCityArea, getCityAreas } from "@/lib/domain/catalog";
-import { getManagedCities, getManagedCity, getManagedServicesForCity } from "@/lib/domain/catalog-managed";
+import {
+  getManagedCities,
+  getManagedCity,
+  getManagedCityArea,
+  getManagedCityAreas,
+  getManagedServicesForCity,
+  getManagedStaticCities
+} from "@/lib/domain/catalog-managed";
 import { buildAreaMetadata } from "@/lib/seo/metadata";
 import { createAreaLocalBusinessSchema, createFaqSchema } from "@/lib/seo/schema";
 
-export function generateStaticParams() {
-  return getCities().flatMap((city) =>
-    getCityAreas(city.slug).map((area) => ({
+export const dynamicParams = true;
+export const revalidate = 21600;
+
+export async function generateStaticParams() {
+  const cities = await getManagedStaticCities(50);
+  const areaGroups = await Promise.all(cities.map((city) => getManagedCityAreas(city.slug)));
+
+  return cities.flatMap((city, index) =>
+    areaGroups[index].map((area) => ({
       city: city.slug,
       area: area.areaSlug
     }))
@@ -25,7 +38,7 @@ export async function generateMetadata({
   params: Promise<{ city: string; area: string }>;
 }): Promise<Metadata> {
   const { city: citySlug, area: areaSlug } = await params;
-  const area = getCityArea(citySlug, areaSlug);
+  const area = await getManagedCityArea(citySlug, areaSlug);
   return area ? buildAreaMetadata(area) : {};
 }
 
@@ -36,7 +49,7 @@ export default async function CityAreaPage({
 }) {
   const { city: citySlug, area: areaSlug } = await params;
   const city = await getManagedCity(citySlug);
-  const area = getCityArea(citySlug, areaSlug);
+  const area = await getManagedCityArea(citySlug, areaSlug);
 
   if (!city || !area) {
     notFound();
@@ -44,7 +57,9 @@ export default async function CityAreaPage({
 
   const cities = await getManagedCities();
   const services = await getManagedServicesForCity(citySlug);
-  const nearbyAreas = getCityAreas(city.slug).filter((item) => item.areaSlug !== area.areaSlug).slice(0, 6);
+  const nearbyAreas = (await getManagedCityAreas(city.slug))
+    .filter((item) => item.areaSlug !== area.areaSlug)
+    .slice(0, 6);
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -78,6 +93,27 @@ export default async function CityAreaPage({
               </div>
             </div>
           </section>
+
+          <DirectAnswerGrid
+            answers={[
+              {
+                question: `How fast can a plumber reach ${area.areaName}?`,
+                answer: `${area.areaName} requests are routed through the ${city.name} dispatch flow, with active zones targeting around ${city.responseTimeMinutes}-${city.responseTimeMinutes + 8} minutes depending on availability.`
+              },
+              {
+                question: `What is the starting price in ${area.areaName}?`,
+                answer: "Small jobs follow the city service price bands, while larger pipe, seepage, tank, and fitting work is quoted after inspection details are confirmed."
+              },
+              {
+                question: `Do you serve ${area.areaName}?`,
+                answer: `${area.areaName} is listed as an active Plumberdost locality page for ${city.name}. Call or WhatsApp to confirm exact building-level availability.`
+              },
+              {
+                question: "Can I book on WhatsApp?",
+                answer: `Yes. Share your issue, location in ${area.areaName}, photos if available, and timing preference on WhatsApp at ${city.whatsappNumber}.`
+              }
+            ]}
+          />
 
           <section className="rounded-[32px] bg-white p-8 shadow-panel">
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-teal">

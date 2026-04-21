@@ -40,6 +40,7 @@ export type City = {
   slug: string;
   name: string;
   state: string;
+  priorityTier?: number;
   phoneNumber: string;
   whatsappNumber: string;
   responseTimeMinutes: number;
@@ -55,6 +56,7 @@ export type City = {
   faq: FAQ[];
   featuredReviewIds: string[];
   launchReady: boolean;
+  updatedAt?: string | Date;
 };
 
 export type Service = {
@@ -79,6 +81,7 @@ export type CityServicePage = {
   localPriceMin: number;
   localPriceMax: number;
   publish: boolean;
+  updatedAt?: string | Date;
 };
 
 export type AreaPage = {
@@ -87,12 +90,16 @@ export type AreaPage = {
   cityName: string;
   areaName: string;
   areaSlug: string;
+  pincode?: string;
+  priority?: number;
+  isServiceable?: boolean;
   heroHeadline: string;
   metaTitle: string;
   metaDescription: string;
   bodyCopy: string[];
   highlights: string[];
   faq: FAQ[];
+  updatedAt?: string | Date;
 };
 
 export type ServiceCoverageZone = {

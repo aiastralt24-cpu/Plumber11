@@ -4,7 +4,8 @@ import { LeadForm } from "@/components/forms/lead-form";
 import { CitySelector } from "@/components/sections/city-selector";
 import { HeroVisual } from "@/components/sections/hero-visual";
 import { ServiceIcon } from "@/components/ui/service-icon";
-import { getCities, getFeaturedReviews, getServices } from "@/lib/domain/catalog";
+import { getFeaturedReviews } from "@/lib/domain/catalog";
+import { getManagedCities, getManagedServices } from "@/lib/domain/catalog-managed";
 import type { Service } from "@/types/domain";
 
 const topServiceLabels: Record<string, string> = {
@@ -14,9 +15,10 @@ const topServiceLabels: Record<string, string> = {
   "tap-installation": "Tap or faucet problem"
 };
 
-export default function HomePage() {
-  const cities = getCities();
-  const services = getServices();
+export const revalidate = 21600;
+
+export default async function HomePage() {
+  const [cities, services] = await Promise.all([getManagedCities(), getManagedServices()]);
   const featuredReviews = getFeaturedReviews();
   const primaryCity = cities[0];
   const totalJobs = cities.reduce((sum, city) => sum + city.jobsCompleted, 0);

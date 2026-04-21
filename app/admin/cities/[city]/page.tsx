@@ -1,9 +1,18 @@
 import { notFound } from "next/navigation";
 import { AdminShell } from "@/components/sections/admin-shell";
 import { getAdminAccess } from "@/lib/admin";
-import { getCity, getServices } from "@/lib/domain/catalog";
-import { getManagedCity, getManagedCityServicePage } from "@/lib/domain/catalog-managed";
-import { updateCityPricing, updateCitySettings, seedCityPricing } from "@/app/admin/cities/[city]/actions";
+import {
+  getManagedAllCityAreas,
+  getManagedCity,
+  getManagedCityServicePage,
+  getManagedServices
+} from "@/lib/domain/catalog-managed";
+import {
+  updateAreaSettings,
+  updateCityPricing,
+  updateCitySettings,
+  seedCityPricing
+} from "@/app/admin/cities/[city]/actions";
 
 export default async function AdminCityDetailPage({
   params
@@ -19,7 +28,7 @@ export default async function AdminCityDetailPage({
     notFound();
   }
 
-  const services = getServices();
+  const [services, areas] = await Promise.all([getManagedServices(), getManagedAllCityAreas(city.slug)]);
   const pricingRows = await Promise.all(
     services.map(async (service) => ({
       service,
@@ -58,6 +67,22 @@ export default async function AdminCityDetailPage({
               <label className="mb-2 block text-sm font-semibold text-primary">Jobs completed</label>
               <input className="h-14 w-full rounded-2xl border border-[#d8d1c5] bg-[#fcfaf6] px-4" defaultValue={city.jobsCompleted} min="0" name="jobsCompleted" type="number" />
             </div>
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-primary">Plumbers on network</label>
+              <input className="h-14 w-full rounded-2xl border border-[#d8d1c5] bg-[#fcfaf6] px-4" defaultValue={city.plumbersOnNetwork} min="0" name="plumbersOnNetwork" type="number" />
+            </div>
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-primary">Priority tier</label>
+              <input className="h-14 w-full rounded-2xl border border-[#d8d1c5] bg-[#fcfaf6] px-4" defaultValue={city.priorityTier ?? 3} min="1" name="priorityTier" type="number" />
+            </div>
+            <div className="md:col-span-2">
+              <label className="mb-2 block text-sm font-semibold text-primary">SEO title</label>
+              <input className="h-14 w-full rounded-2xl border border-[#d8d1c5] bg-[#fcfaf6] px-4" defaultValue={city.metaTitle} name="metaTitle" />
+            </div>
+            <div className="md:col-span-2">
+              <label className="mb-2 block text-sm font-semibold text-primary">SEO description</label>
+              <textarea className="min-h-28 w-full rounded-2xl border border-[#d8d1c5] bg-[#fcfaf6] px-4 py-3" defaultValue={city.metaDescription} name="metaDescription" />
+            </div>
             <label className="flex items-center gap-3 text-sm font-semibold text-primary">
               <input defaultChecked={city.launchReady} name="launchReady" type="checkbox" />
               Launch ready
@@ -68,6 +93,39 @@ export default async function AdminCityDetailPage({
               </button>
             </div>
           </form>
+        </section>
+
+        <section className="rounded-[28px] bg-white p-6 shadow-panel">
+          <h2 className="text-2xl font-semibold text-primary">Area serviceability</h2>
+          <p className="mt-2 text-sm text-muted">
+            Control which area pages are active, their priority, and their SEO snippets.
+          </p>
+          <div className="mt-6 space-y-4">
+            {areas.map((area) => (
+              <form key={area.id} action={updateAreaSettings} className="grid gap-4 rounded-[24px] bg-bg p-5 md:grid-cols-[1fr_0.4fr_0.5fr_auto] md:items-end">
+                <input name="citySlug" type="hidden" value={city.slug} />
+                <input name="areaSlug" type="hidden" value={area.areaSlug} />
+                <div>
+                  <p className="text-lg font-semibold text-primary">{area.areaName}</p>
+                  <label className="mt-3 block text-sm font-semibold text-primary">SEO title</label>
+                  <input className="mt-2 h-12 w-full rounded-2xl border border-[#d8d1c5] bg-white px-4" defaultValue={area.metaTitle} name="metaTitle" />
+                  <label className="mt-3 block text-sm font-semibold text-primary">SEO description</label>
+                  <textarea className="mt-2 min-h-20 w-full rounded-2xl border border-[#d8d1c5] bg-white px-4 py-3" defaultValue={area.metaDescription} name="metaDescription" />
+                </div>
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-primary">Priority</label>
+                  <input className="h-12 w-full rounded-2xl border border-[#d8d1c5] bg-white px-4" defaultValue={area.priority ?? 10} min="1" name="priority" type="number" />
+                </div>
+                <label className="flex items-center gap-3 text-sm font-semibold text-primary">
+                  <input defaultChecked={area.isServiceable ?? true} name="isServiceable" type="checkbox" />
+                  Serviceable
+                </label>
+                <button className="rounded-2xl bg-primary px-5 py-3 font-semibold text-white" type="submit">
+                  Save area
+                </button>
+              </form>
+            ))}
+          </div>
         </section>
 
         <section className="rounded-[28px] bg-white p-6 shadow-panel">
@@ -103,6 +161,10 @@ export default async function AdminCityDetailPage({
                   <label className="mb-2 block text-sm font-semibold text-primary">Max price</label>
                   <input className="h-14 w-full rounded-2xl border border-[#d8d1c5] bg-white px-4" defaultValue={combo?.localPriceMax ?? service.priceMax} name="localPriceMax" min="0" type="number" />
                 </div>
+                <label className="flex items-center gap-3 text-sm font-semibold text-primary">
+                  <input defaultChecked={combo?.publish ?? true} name="isPublished" type="checkbox" value="on" />
+                  Published
+                </label>
                 <button className="rounded-2xl bg-primary px-5 py-3 font-semibold text-white" type="submit">
                   Save
                 </button>

@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { ServiceIcon } from "@/components/ui/service-icon";
-import { getServices } from "@/lib/domain/catalog";
+import { getManagedServices } from "@/lib/domain/catalog-managed";
 
-export default function ServicesIndexPage() {
-  const services = getServices();
+export const revalidate = 21600;
+
+export default async function ServicesIndexPage() {
+  const services = await getManagedServices();
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">

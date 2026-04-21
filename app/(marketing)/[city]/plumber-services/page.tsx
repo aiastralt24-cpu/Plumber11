@@ -4,17 +4,28 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ArrowRight, Clock3, PhoneCall, ShieldCheck, Siren, Star, Zap } from "lucide-react";
 import { DesktopContactCard } from "@/components/sections/desktop-contact-card";
+import { DirectAnswerGrid } from "@/components/sections/direct-answer-grid";
 import { StickyCTA } from "@/components/sections/sticky-cta";
 import { JsonLd } from "@/components/ui/json-ld";
 import { ServiceIcon } from "@/components/ui/service-icon";
-import { getCities, getCityAreas, getCityReviews } from "@/lib/domain/catalog";
-import { getManagedCities, getManagedCity, getManagedServicesForCity } from "@/lib/domain/catalog-managed";
+import { getCityReviews } from "@/lib/domain/catalog";
+import {
+  getManagedCities,
+  getManagedCity,
+  getManagedCityAreas,
+  getManagedServicesForCity,
+  getManagedStaticCities
+} from "@/lib/domain/catalog-managed";
 import { buildCityMetadata } from "@/lib/seo/metadata";
 import { createFaqSchema, createLocalBusinessSchema, createReviewSchema } from "@/lib/seo/schema";
 import { formatCurrency } from "@/lib/utils/format";
 
-export function generateStaticParams() {
-  return getCities().map((city) => ({ city: city.slug }));
+export const dynamicParams = true;
+export const revalidate = 21600;
+
+export async function generateStaticParams() {
+  const cities = await getManagedStaticCities(100);
+  return cities.map((city) => ({ city: city.slug }));
 }
 
 export async function generateMetadata({
@@ -41,7 +52,7 @@ export default async function CityLandingPage({
     notFound();
   }
 
-  const areas = getCityAreas(city.slug);
+  const areas = await getManagedCityAreas(city.slug);
   const cityReviews = getCityReviews(city.slug);
 
   return (
@@ -132,6 +143,27 @@ export default async function CityLandingPage({
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[1fr_360px] lg:px-8">
         <div className="space-y-8">
+          <DirectAnswerGrid
+            answers={[
+              {
+                question: `How fast can a plumber reach in ${city.name}?`,
+                answer: `Active ${city.name} requests are routed for an average ${city.responseTimeMinutes}-minute response target, depending on locality, technician availability, and job urgency.`
+              },
+              {
+                question: `What is the starting price in ${city.name}?`,
+                answer: `Small plumbing fixes start from the listed service price bands. Larger repairs are confirmed after issue diagnosis, site details, and material requirements.`
+              },
+              {
+                question: `Do you serve my area in ${city.name}?`,
+                answer: `The area list below shows active service zones. If your locality is nearby, call or WhatsApp and the dispatch team can confirm availability before booking.`
+              },
+              {
+                question: "Can I book on WhatsApp?",
+                answer: `Yes. Send your issue, area, and preferred time on WhatsApp at ${city.whatsappNumber}, and the ${city.name} team will guide the next step.`
+              }
+            ]}
+          />
+
           <section className="rounded-[32px] bg-white p-8 shadow-panel">
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-teal">
               Services in {city.name}

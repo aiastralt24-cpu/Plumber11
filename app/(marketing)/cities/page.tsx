@@ -1,9 +1,12 @@
 import Link from "next/link";
-import { getCities, getCityAreas } from "@/lib/domain/catalog";
+import { getManagedCities, getManagedCityAreas } from "@/lib/domain/catalog-managed";
 
-export default function CitiesPage() {
-  const cities = getCities();
-  const areaCount = cities.reduce((total, city) => total + getCityAreas(city.slug).length, 0);
+export const revalidate = 21600;
+
+export default async function CitiesPage() {
+  const cities = await getManagedCities();
+  const areaGroups = await Promise.all(cities.map((city) => getManagedCityAreas(city.slug)));
+  const areaCount = areaGroups.reduce((total, areas) => total + areas.length, 0);
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">

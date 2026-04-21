@@ -13,7 +13,8 @@
     "typecheck": "next typegen && tsc --noEmit",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
-    "db:seed": "node scripts/seed.mjs"
+    "db:seed": "node scripts/seed.mjs",
+    "seo:import": "node scripts/import-local-seo.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
