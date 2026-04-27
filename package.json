@@ -11,9 +11,11 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "next typegen && tsc --noEmit",
+    "postinstall": "prisma generate",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "node scripts/seed.mjs",
+    "seo:generate-india": "node scripts/generate-india-seo-import.mjs",
     "seo:import": "node scripts/import-local-seo.mjs"
   },
   "dependencies": {
