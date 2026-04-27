@@ -27,13 +27,13 @@ export async function GET() {
   const areaChunks = Math.max(1, Math.ceil(areaCount / SITEMAP_CHUNK_SIZE));
   const cityServiceChunks = Math.max(1, Math.ceil(cityServiceCount / SITEMAP_CHUNK_SIZE));
   const paths = [
-    "/sitemaps/static.xml",
-    "/sitemaps/cities.xml",
-    "/sitemaps/emergency.xml",
-    ...Array.from({ length: areaChunks }, (_, index) => `/sitemaps/areas-${index + 1}.xml`),
+    "/sitemaps/static",
+    "/sitemaps/cities",
+    "/sitemaps/emergency",
+    ...Array.from({ length: areaChunks }, (_, index) => `/sitemaps/areas/${index + 1}`),
     ...Array.from(
       { length: cityServiceChunks },
-      (_, index) => `/sitemaps/city-services-${index + 1}.xml`
+      (_, index) => `/sitemaps/city-services/${index + 1}`
     )
   ];
 
